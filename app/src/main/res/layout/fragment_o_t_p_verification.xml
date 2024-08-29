@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/OTPVerification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OTP Verification"
+        style="@style/LabelStyle"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
+
+    <TextView
+        android:id="@+id/tvOtpInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/OTPVerification"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Enter the 6-digit code sent to your number"
+        android:textColor="@color/black200"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/llOtpContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvOtpInstructions"
+        android:layout_marginTop="32dp">
+
+        <EditText
+            android:id="@+id/etOtp1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="18sp"
+            android:background="@drawable/otp_box_background"/>
+
+        <EditText
+            android:id="@+id/etOtp2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="18sp"
+            android:background="@drawable/otp_box_background"/>
+
+        <EditText
+            android:id="@+id/etOtp3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="18sp"
+            android:background="@drawable/otp_box_background"/>
+
+        <EditText
+            android:id="@+id/etOtp4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="18sp"
+            android:background="@drawable/otp_box_background"/>
+
+        <EditText
+            android:id="@+id/etOtp5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="18sp"
+            android:background="@drawable/otp_box_background"/>
+
+        <EditText
+            android:id="@+id/etOtp6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="18sp"
+            android:background="@drawable/otp_box_background"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tvResendOtp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resend OTP in 30 s"
+        android:textColor="@color/grey_100"
+        android:textSize="14sp"
+        android:layout_below="@id/llOtpContainer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnVerifyOtp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/SolidButtonStyle"
+        android:background="@drawable/solid_bg"
+        android:text="Verify OTP"
+        android:layout_marginTop="32dp"
+        android:layout_below="@id/tvResendOtp"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

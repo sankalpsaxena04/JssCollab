@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <include
+        android:id="@+id/toolbar"
+        style="@style/ToolbarStyle"
+        layout="@layout/action_bar_back"
+        />
+
+
+
+    <RelativeLayout
+        android:id="@+id/containerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="@dimen/container_layout_margin"
+        android:layout_marginTop="@dimen/container_layout_margin"
+        android:layout_marginEnd="@dimen/container_layout_margin"
+        android:layout_marginBottom="@dimen/container_layout_margin">
+
+        <TextView
+            android:id="@+id/verify_phone_no."
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp"
+            style="@style/LabelStyle"
+            android:textStyle="bold"
+            android:text="@string/verify_your_n_phone_number"
+            android:textColor="@color/secondary_bg" />
+        <TextView
+            android:id="@+id/will_send_otp"
+            style="@style/LabelStyle2"
+            android:textColor="@color/secondary_bg"
+            android:layout_below="@id/verify_phone_no."
+            android:layout_marginTop="16dp"
+            android:text="@string/we_will_send_you_an_one_time_password_otp_on_your_whatsapp_to_verify_your_phone_number" />
+        <TextView
+            android:id="@+id/enter_phone_no_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/will_send_otp"
+            android:layout_marginTop="35dp"
+            android:text="@string/enter_mobile_no"/>
+        <EditText
+            android:id="@+id/et_phone"
+            style="@style/EditTextStyle"
+            android:maxLength="10"
+            android:layout_below="@id/enter_phone_no_textview"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/primary"
+            android:hint="@string/_92xxxxxxxx"
+            android:inputType="phone" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/get_otp"
+            style="@style/SolidButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/solid_bg"
+            android:text="@string/get_otp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="22dp" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/login_nav"
+            app:lottie_rawRes="@raw/loader_anim"
+            app:lottie_autoPlay="true"
+            android:visibility="invisible"
+            android:layout_marginTop="@dimen/margin_top_30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_loop="true"/>
+
+
+        <RelativeLayout
+            android:id="@+id/login_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_phone"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/have_account"
+                style="@style/LabelStyle"
+                android:text="@string/have_account"
+                android:textColor="@color/account"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/login"
+                style="@style/LabelStyle"
+                android:layout_marginStart="0dp"
+                android:layout_toEndOf="@id/have_account"
+                android:text="@string/login_label"
+                android:textColor="@color/primary"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

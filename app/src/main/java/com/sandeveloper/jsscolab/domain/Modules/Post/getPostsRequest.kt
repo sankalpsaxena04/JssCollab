@@ -1,0 +1,10 @@
+package com.sandeveloper.jsscolab.domain.Modules.Post
+
+data class getPostsRequest(
+    val apps: List<String>,
+    val categories: List<String>,
+    val addresses: List<String>,
+    val my_contribution: Int,
+    val address: String,
+    val my_year: Boolean
+)

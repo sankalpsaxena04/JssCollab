@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "317273193239",
+    "project_id": "jss-connect-61d18",
+    "storage_bucket": "jss-connect-61d18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317273193239:android:9a72fc5ba3f9b93e431552",
+        "android_client_info": {
+          "package_name": "com.sandeveloper.jsscolab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDohjRem80mLb04_FXvW-GdueyW_U-KKlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
