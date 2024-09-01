@@ -26,6 +26,6 @@ interface CoshopApi {
     suspend fun updatePost(@Body updatePost: updatePostRequest): Response<commonResponse>
 
     @DELETE("/delete-post")
-    suspend fun deletePost(@Body postId: String): Response<commonResponse>
-
+    suspend fun deletePost(@Body postId: Map<String,String>): Response<commonResponse>
+    //mapOf("post_id" to postId)
 }

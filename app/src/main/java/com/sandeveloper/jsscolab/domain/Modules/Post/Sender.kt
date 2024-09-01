@@ -6,6 +6,6 @@ data class Sender(
     val admission_number: String,
     val address: String,
     val photo: String,
-    val rating: String,
-    val rated_count: String
+    val rating: Number,
+    val rated_count: Number
 )

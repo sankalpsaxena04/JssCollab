@@ -1,12 +1,65 @@
 package com.sandeveloper.jsscolab.domain.Api
 
+import android.media.tv.CommandResponse
 import com.google.gson.JsonObject
+import com.sandeveloper.jsscolab.domain.Modules.Profile.BanStatusResponse
 import com.sandeveloper.jsscolab.domain.Modules.Profile.CreateProfile
+import com.sandeveloper.jsscolab.domain.Modules.Profile.MyProfileResponse
+import com.sandeveloper.jsscolab.domain.Modules.Profile.MyRatingResponse
+import com.sandeveloper.jsscolab.domain.Modules.Profile.PictureUpdateRequest
+import com.sandeveloper.jsscolab.domain.Modules.Profile.ProfileUpdateRequest
+import com.sandeveloper.jsscolab.domain.Modules.Profile.RateUserRequest
+import com.sandeveloper.jsscolab.domain.Modules.Profile.ReportUserRequest
+import com.sandeveloper.jsscolab.domain.Modules.commonResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface ProfileApi {
     @POST("/create-profile")
-    suspend fun createProfile(@Body createProfile: CreateProfile): Response<JsonObject>
+    suspend fun createProfile(@Body createProfile: CreateProfile): Response<commonResponse>
+
+    @PATCH("/update-profile")
+    suspend fun updateProfile(
+        @Body profileUpdateRequest: ProfileUpdateRequest
+    ): Response<commonResponse>
+
+    @PUT("/update-picture")
+    suspend fun updatePicture(
+        @Body pictureUpdateRequest: PictureUpdateRequest
+    ): Response<commonResponse>
+
+    @GET("/my-details")
+    suspend fun getMyDetails(): Response<MyProfileResponse>
+
+    @GET("/my-rating")
+    suspend fun getMyRating(): Response<MyRatingResponse>
+
+    @POST("/rate-user")
+    suspend fun rateUser(
+        @Body rateUserRequest: RateUserRequest
+    ): Response<commonResponse>
+
+    @POST("/report-user")
+    suspend fun reportUser(
+        @Body reportUserRequest: ReportUserRequest
+    ): Response<commonResponse>
+
+    @POST("/block-user")
+    suspend fun blockUser(
+        @Body blockUserRequest: Map<String,String>
+    ): Response<commonResponse>
+    // mapOf("user_id" to user_id)
+
+    @DELETE("/delete-account")
+    suspend fun deleteAccount(): Response<CommandResponse>
+
+    @GET("/is-banned")
+    suspend fun isBanned(): Response<BanStatusResponse>
+
+
 }
