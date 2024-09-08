@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">#FFFFFFFF</color>
-
+    <color name="white">#FFFFFF</color>
     <color name="primary">#FF5722</color>
-    <color name="darkTheme_bg">#242222</color>
+    <color name="secondary">#4CAF50</color>
+    <color name="secondaryVariant">#388E3C</color>
     <color name="dim_primary">#D584DE5D</color>
     <color name="dimmer_primary">#4859953F</color>
     <color name="purple">@color/colorPrimary</color>
     <color name="secondaryBlue">#009688</color>
 
-
     <color name="primary_bg">#EAEAEA</color>
     <color name="secondary_bg">#161616</color>
     <color name="darkbg_main_a80">#131313</color>
     <color name="chat_bg">#1E1E1E</color>
+
+    <color name="transparent">#00000000</color>
 
     <color name="secondaryPink">#ff89b3</color>
     <color name="primary_lighter_bg">#303030</color>
@@ -75,7 +76,5 @@
     <color name="mention_list_rv_child_bg">#232323</color>
     <color name="subheading">#C5C5C5</color>
     <color name="seperator_light">#8B1E1E1E</color>
-
-
-
+    <color name="light_gray">#9AA3A1A1</color>
 </resources>

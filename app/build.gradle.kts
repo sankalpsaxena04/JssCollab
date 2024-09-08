@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
+    implementation(libs.androidx.recyclerview)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     //navigation

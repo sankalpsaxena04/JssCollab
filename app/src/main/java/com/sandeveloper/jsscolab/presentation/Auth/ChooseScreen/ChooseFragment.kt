@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.sandeveloper.jsscolab.MainActivity
+import com.sandeveloper.MainActivity
 import com.sandeveloper.jsscolab.R
 import com.sandeveloper.jsscolab.databinding.FragmentChooseBinding
 import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.animFadein
