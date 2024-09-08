@@ -33,6 +33,13 @@ object Endpoints {
 //
 //    }
 
+    object categories{
+        const val QuickCommerce = "Quick Commerce"
+        const val FoodDelivery = "Food Delivery"
+        const val ECommerce = "E-Commerce"
+        const val SharedCab = "Shared Cab"
+        const val Exchange = "Exchange"
+    }
     object Storage {
         const val DP_PATH = "/DP/dp"
         const val IMAGE_PATH = "/icon/img"

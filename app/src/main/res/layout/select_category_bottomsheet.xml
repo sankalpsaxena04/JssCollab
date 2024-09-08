@@ -1,0 +1,153 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/primary_bg"
+    >
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/purple"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="10"
+        android:background="@color/primary_bg"
+        >
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/secondary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:fontFamily="@font/lexendextrabold"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Select Role"
+            android:textColor="@color/black200"
+            android:textSize="18dp" />
+
+
+        <ImageButton
+            android:id="@+id/add_project"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="invisible"
+            android:background="@null"
+            android:src="@drawable/ic_add"
+            app:tint="@color/dim_primary" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/card_bg"
+        />
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:id="@+id/progress_bar"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:indeterminateTint="@color/primary"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:visibility="visible"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroup">
+            <Button
+                android:background="@color/transparent"
+                android:id="@+id/QuickCommerce"
+                android:buttonTint="@color/secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexendbold"
+                android:textColor="@color/primary"
+                android:textSize="16dp"
+                android:paddingStart="15dp"
+                android:text="Quick Commerce"/>
+
+            <Button
+                android:background="@color/transparent"
+                android:id="@+id/FoodDelivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/secondary"
+                android:fontFamily="@font/lexendbold"
+                android:textColor="@color/primary"
+                android:paddingStart="15dp"
+                android:textSize="16dp"
+                android:text="Food Delivery"/>
+
+            <Button
+                android:background="@color/transparent"
+                android:id="@+id/ECommerce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:buttonTint="@color/secondary"
+                android:fontFamily="@font/lexendbold"
+                android:textColor="@color/primary"
+                android:textSize="16dp"
+                android:text="E-Commerce"/>
+
+            <Button
+                android:background="@color/transparent"
+                android:id="@+id/Exchange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:buttonTint="@color/secondary"
+                android:fontFamily="@font/lexendbold"
+                android:textColor="@color/primary"
+                android:textSize="16dp"
+                android:text="Exchange"/>
+            <Button
+                android:background="@color/transparent"
+                android:id="@+id/SharedCab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:buttonTint="@color/secondary"
+                android:fontFamily="@font/lexendbold"
+                android:textColor="@color/primary"
+                android:textSize="16dp"
+                android:text="Shared Cab"/>
+
+        </RadioGroup>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+</LinearLayout>

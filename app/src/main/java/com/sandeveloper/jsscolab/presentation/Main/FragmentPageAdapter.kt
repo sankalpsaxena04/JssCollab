@@ -17,8 +17,8 @@ class FragmentPageAdapter(
     override fun createFragment(position: Int): Fragment {
         when(position){
             0 -> return HomeFragment()
-            1 -> return Chat()
-            2 -> return CreatePost()
+            1 -> return CreatePost()
+            2 -> return Chat()
             else -> return Profile()
         }
     }

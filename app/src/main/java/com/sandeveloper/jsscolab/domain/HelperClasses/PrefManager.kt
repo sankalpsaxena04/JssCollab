@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.sandeveloper.jsscolab.domain.Constants.Endpoints
+import com.sandeveloper.jsscolab.domain.HelperClasses.PrefManager.sharedPreferences
 import java.util.concurrent.ConcurrentHashMap
 
 object PrefManager {
@@ -30,5 +31,47 @@ object PrefManager {
 
     }
 
+    fun getAppMode(): String? {
+        return sharedPreferences.getString("appMode", Endpoints.ONLINE_MODE)
+    }
 
+    fun setAppMode(mode:String) {
+        if (mode==Endpoints.OFFLINE_MODE){
+            setShakePref(false)
+        }
+        editor.putString("appMode", mode)
+        editor.apply()
+    }
+
+    fun hasOfflineDialogBeenShown(): Boolean {
+        return sharedPreferences.getBoolean("offlineDialogShown", false)
+    }
+
+    fun setOfflineDialogShown(isshown:Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("offlineDialogShown", isshown)
+        editor.apply()
+    }
+
+    fun setShakePref(bool:Boolean) {
+        editor.putBoolean("shake", bool)
+        editor.apply()
+    }
+
+    fun getShakeSensitivity(): Int {
+        return sharedPreferences.getInt("shakesensi", 2)
+    }
+
+    fun setShakeSensitivity(sensi:Int) {
+        editor.putInt("shakesensi", sensi)
+        editor.apply()
+    }
+
+    fun setSelectedCategory(category:String){
+        editor.putString("postCategorySelected",category)
+        editor.apply()
+    }
+    fun getSelectedCategory():String?{
+        return sharedPreferences.getString("postCategorySelected",null)
+    }
 }

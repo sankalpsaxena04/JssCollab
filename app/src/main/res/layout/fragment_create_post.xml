@@ -1,13 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.Main.CreatePost">
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/topbar"
+                layout="@layout/create_post_topbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="visible"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/category"
+                android:text="Select Category"
+                android:fontFamily="@font/jetnlregular"
+                app:layout_constraintTop_toBottomOf="@id/topbar"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                android:padding="8dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:focusedByDefault="false"
+                android:background="@drawable/gray_border_box"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/select_app_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="gone"
+                android:fontFamily="@font/lexendblack"
+                android:text="Select Apps-"
+                app:layout_constraintStart_toStartOf="@+id/category"
+                app:layout_constraintTop_toBottomOf="@id/category" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/app_chip_group"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
+                app:chipSpacing="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/select_app_textview"
+                app:singleLine="false" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hostels"
+                android:text="Select Hostels to Collab"
+                android:fontFamily="@font/jetnlregular"
+                app:layout_constraintTop_toBottomOf="@id/app_chip_group"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:padding="8dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:focusedByDefault="false"
+                android:background="@drawable/gray_border_box"
+                />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sender_contribution"
+                android:text="Enter your contribution"
+                android:fontFamily="@font/jetnlregular"
+                app:layout_constraintTop_toBottomOf="@id/hostels"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:padding="8dp"
+                android:inputType="numberDecimal"
+                android:background="@drawable/gray_border_box"
+                />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/total_amount"
+                android:text="Enter Total Amount"
+                android:fontFamily="@font/jetnlregular"
+                app:layout_constraintTop_toBottomOf="@id/sender_contribution"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:padding="8dp"
+                android:inputType="numberDecimal"
+                android:background="@drawable/gray_border_box"
+                />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Comment"
+                android:hint="Add Description..."
+                android:fontFamily="@font/jetnlregular"
+                app:layout_constraintTop_toBottomOf="@id/total_amount"
+                android:minLines="4"
+                android:lines="4"
+                android:maxLines="6"
+                android:gravity="top"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:padding="8dp"
+                android:background="@drawable/gray_border_box"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Time"
+                android:text="Add Duration"
+                android:fontFamily="@font/jetnlregular"
+                app:layout_constraintTop_toBottomOf="@id/Comment"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:textAlignment="viewStart"
+                android:paddingHorizontal="8dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:focusedByDefault="false"
+                android:background="@drawable/gray_border_box"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/date"
+                android:text="Add Date"
+                android:fontFamily="@font/jetnlregular"
+                app:layout_constraintTop_toBottomOf="@id/Time"
+                android:visibility="gone"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:textAlignment="viewStart"
+                android:paddingHorizontal="8dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:focusedByDefault="false"
+                android:background="@drawable/gray_border_box"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/select_items_to_receive_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="gone"
+                android:fontFamily="@font/lexendblack"
+                android:text="Select items to receive-"
+                app:layout_constraintStart_toStartOf="@+id/date"
+                app:layout_constraintTop_toBottomOf="@id/date" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/receive_chip_group"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
+                app:chipSpacing="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/select_items_to_receive_text"
+                app:singleLine="false" />
+            <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/select_items_to_give_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:fontFamily="@font/lexendblack"
+            android:text="Select items to give-"
+            app:layout_constraintStart_toStartOf="@+id/receive_chip_group"
+            app:layout_constraintTop_toBottomOf="@id/receive_chip_group" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/give_chip_group"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
+                app:chipSpacing="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/select_items_to_give_text"
+                app:singleLine="false" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="20dp"
+                android:id="@+id/createPost"
+                android:layout_marginHorizontal="20dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_create"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/give_chip_group">
+
+                <ImageView
+
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:src="@drawable/create_post_write"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lexendextrabold"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="CreatePost"
+                    android:textColor="@color/white"
+                    android:textSize="28dp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
