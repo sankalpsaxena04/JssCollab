@@ -62,7 +62,7 @@ class CreatePost : Fragment() {
     ): View {
         binding = FragmentCreatePostBinding.inflate(inflater, container, false)
 
-        binding.dateTime.setOnClickThrottleBounceListener {
+        binding.Time.setOnClickThrottleBounceListener {
             openTimePicker()
         }
 
@@ -83,7 +83,7 @@ class CreatePost : Fragment() {
         picker.addOnPositiveButtonClickListener {
             val h = picker.hour
             val m = picker.minute
-            binding.dateTime.setText("$h:$m")
+            binding.Time.setText("$h:$m")
         }
     }
     private fun openDatePicker(){
