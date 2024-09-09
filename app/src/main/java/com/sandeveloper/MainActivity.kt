@@ -39,7 +39,7 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home))
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.baseline_add_box_24))
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_chat))
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_profile))
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.more))
 
         viewPager2.adapter = fragmentPageAdapter
 

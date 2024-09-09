@@ -8,7 +8,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.sandeveloper.jsscolab.R
 import com.sandeveloper.jsscolab.databinding.ActivityStartScreenBinding
 import com.sandeveloper.jsscolab.domain.HelperClasses.NetworkChangeReceiver
-import com.sandeveloper.jsscolab.domain.Interfaces.Repository
 import com.sandeveloper.jsscolab.domain.Utility.GlobalUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

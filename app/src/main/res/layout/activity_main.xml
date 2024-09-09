@@ -24,7 +24,7 @@
         tabMode="fixed"
         app:tabIndicatorColor="@null"
         android:id="@+id/tabLayout"
-        app:tabIconTint="@color/black_overlay"
+        app:tabIconTint="@color/pureblack"
         app:tabIconTintMode="src_in"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -18,8 +18,8 @@ class FragmentPageAdapter(
         when(position){
             0 -> return HomeFragment()
             1 -> return CreatePost()
-            2 -> return Chat()
-            else -> return Profile()
+            2 -> return ChatList()
+            else -> return More()
         }
     }
 }

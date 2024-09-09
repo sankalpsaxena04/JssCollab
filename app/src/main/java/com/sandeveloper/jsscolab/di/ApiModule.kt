@@ -7,9 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -94,8 +92,8 @@ class ApiModule {
     fun provideSwapApi(
         retrofitBuilder: Retrofit.Builder,
         okHttpClient: OkHttpClient
-    ): swapApi {
-        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, swapApi::class.java, "swap") as swapApi
+    ): SwapApi {
+        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, SwapApi::class.java, "swap") as SwapApi
     }
 
     @Singleton

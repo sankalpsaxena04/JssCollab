@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.text.format.DateFormat.is24HourFormat
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -71,7 +72,7 @@ class CreatePost : Fragment() {
 
     private fun openTimePicker() {
         val isSystem24Hour = is24HourFormat(requireContext())
-        val clockFormat = if(isSystem24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H
+        val clockFormat = if(!isSystem24Hour&&PrefManager.getSelectedCategory()==Endpoints.categories.SharedCab) TimeFormat.CLOCK_12H else TimeFormat.CLOCK_24H
 
         val picker  = MaterialTimePicker.Builder()
             .setTimeFormat(clockFormat)
@@ -83,7 +84,9 @@ class CreatePost : Fragment() {
         picker.addOnPositiveButtonClickListener {
             val h = picker.hour
             val m = picker.minute
-            binding.Time.setText("$h:$m")
+            binding.Time.gravity = Gravity.CENTER
+            binding.Time.setText(if(m<10) "$h:0$m" else "$h:$m")
+
         }
     }
     private fun openDatePicker(){
@@ -109,6 +112,13 @@ class CreatePost : Fragment() {
             PrefManager.setSelectedCategory(Endpoints.categories.QuickCommerce)
             binding.category.setText(Endpoints.categories.QuickCommerce)
             setUpChipSelect(requireContext(), Endpoints.categories.QuickCommerce)
+            dialog.dismiss()
+            binding.appChipGroup.visible()
+        }
+        categoryBottomSheetBinding.QuickCommerce.setOnClickThrottleBounceListener {
+            PrefManager.setSelectedCategory(Endpoints.categories.Pharmaceuticals)
+            binding.category.setText(Endpoints.categories.Pharmaceuticals)
+            setUpChipSelect(requireContext(), Endpoints.categories.Pharmaceuticals)
             dialog.dismiss()
             binding.appChipGroup.visible()
         }

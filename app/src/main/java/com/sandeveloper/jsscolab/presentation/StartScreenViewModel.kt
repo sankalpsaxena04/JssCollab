@@ -2,7 +2,6 @@ package com.sandeveloper.jsscolab.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.sandeveloper.jsscolab.domain.Interfaces.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

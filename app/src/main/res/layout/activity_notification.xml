@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="16dp"
+tools:context=".presentation.Notification">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/notificationsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notifications"
+        android:fontFamily="@font/lexendextrabold"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:textColor="@android:color/black" />
+
+    <ImageButton
+        android:background="@color/transparent"
+        android:id="@+id/searchIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/baseline_search_24" />
+</LinearLayout>
+
+<!-- Tab Layout for 'All' and 'Unread' -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:background="@drawable/gray_border_box"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/tabAll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="All"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:background="@drawable/filled_gray_box"
+        android:paddingVertical="8dp" />
+
+    <TextView
+        android:id="@+id/tabUnread"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Unread"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textColor="@android:color/darker_gray"
+        android:paddingVertical="8dp" />
+</LinearLayout>
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerViewNotifications"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp"
+    tools:listitem="@layout/item_notification" />
+
+</LinearLayout>

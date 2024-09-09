@@ -36,6 +36,9 @@
         android:theme="@style/Theme.JssColab"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.Notification"
+            android:exported="false" />
+        <activity
             android:name=".presentation.StartScreen"
             android:exported="false" />
         <activity

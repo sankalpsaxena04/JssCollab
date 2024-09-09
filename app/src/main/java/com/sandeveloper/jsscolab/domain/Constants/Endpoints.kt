@@ -34,6 +34,7 @@ object Endpoints {
 //    }
 
     object categories{
+        const val Pharmaceuticals = "Pharmaceuticals"
         const val QuickCommerce = "Quick Commerce"
         const val FoodDelivery = "Food Delivery"
         const val ECommerce = "E-Commerce"

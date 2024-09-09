@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="@color/white"
+android:padding="16dp"
+tools:context=".presentation.Main.ChatList">
+
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="MESSAGES"
+    android:fontFamily="@font/lexendextrabold"
+    android:layout_margin="10dp"
+    android:textSize="24dp"/>
+<EditText
+    android:id="@+id/searchBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="  Search"
+    android:padding="8dp"
+    android:background="@drawable/gray_border_box"
+    android:drawableStart="@drawable/baseline_search_24"
+    android:layout_marginBottom="16dp"/>
+
+<!-- RecyclerView for Message List -->
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:scrollbars="vertical"
+    tools:listitem="@layout/item_message" />
+</LinearLayout>
