@@ -14,7 +14,7 @@ import com.sandeveloper.jsscolab.domain.Modules.commonResponse
 import retrofit2.Response
 import javax.inject.Inject
 
-class RetrofitRepository @Inject constructor(
+class RetrofitAuthRepository @Inject constructor(
     private val authApi: AuthApi,
     private val profileApi: ProfileApi
 ) : AuthRepository, ProfileRepository {
