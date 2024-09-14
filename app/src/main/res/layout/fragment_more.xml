@@ -76,6 +76,7 @@
 
                 </LinearLayout>
                 <ImageButton
+                    android:id="@+id/edit_profile"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:scaleType="fitXY"

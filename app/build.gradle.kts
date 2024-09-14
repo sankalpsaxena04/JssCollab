@@ -146,4 +146,7 @@ dependencies {
     implementation(platform(libs.firebase.bom.v3320))
     implementation(libs.google.firebase.messaging.ktx)
     implementation(libs.firebase.analytics)
+    implementation("io.socket:socket.io-client:2.0.0") {
+        exclude(group = "org.json", module = "json")
+    }
 }

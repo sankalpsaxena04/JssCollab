@@ -24,6 +24,7 @@ class StartScreen @Inject constructor(): AppCompatActivity(),NetworkChangeReceiv
     private val binding: ActivityStartScreenBinding by lazy{
         ActivityStartScreenBinding.inflate(layoutInflater)
     }
+    private val networkChangeReceiver = NetworkChangeReceiver(this,this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

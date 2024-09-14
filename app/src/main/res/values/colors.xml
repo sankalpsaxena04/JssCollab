@@ -64,7 +64,8 @@
     <color name="account">#999999</color>
     <color name="border_bg">#3E656668</color>
     <color name="border_zero_alpha">#2E2E2E</color>
-    <color name="grey_100">#000000</color>
+    <color name="grey_100">#4A4A4A</color>
+    <color name="gray_100">#4A4A4A</color>
     <color name="positiveButtonTextColor">#000000</color>
     <color name="negativeButtonTextColor">#000000</color>
     <color name="bottomSheetDividerColor">@color/primary_lighter_bg</color>

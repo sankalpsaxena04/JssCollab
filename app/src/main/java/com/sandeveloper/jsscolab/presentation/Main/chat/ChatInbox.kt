@@ -1,4 +1,4 @@
-package com.sandeveloper.jsscolab.presentation.Main
+package com.sandeveloper.jsscolab.presentation.Main.chat
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -7,25 +7,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sandeveloper.jsscolab.R
+import com.sandeveloper.jsscolab.domain.Modules.Messages.Message
 
-class ChatList : Fragment() {
+class ChatInbox : Fragment() {
 
     companion object {
-        fun newInstance() = ChatList()
+        fun newInstance() = ChatInbox()
     }
+
+    private lateinit var inboxAdapter: InboxAdapter
 
     private val viewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_chat_list, container, false)
+
+        inboxAdapter =InboxAdapter(listOf(Message("Ranjan","Hello",1726192327273)))
+
+        return inflater.inflate(R.layout.fragment_chat_inbox, container, false)
     }
 }

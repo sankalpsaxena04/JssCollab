@@ -107,7 +107,6 @@ class CreatePost : Fragment() {
         categoryBottomSheetBinding = SelectCategoryBottomsheetBinding.inflate(layoutInflater)
         val dialog = BottomSheetDialog(requireContext())
 
-        // Use the IDs directly from the categoryBottomSheetBinding
         categoryBottomSheetBinding.QuickCommerce.setOnClickThrottleBounceListener {
             PrefManager.setSelectedCategory(Endpoints.categories.QuickCommerce)
             binding.category.setText(Endpoints.categories.QuickCommerce)
@@ -115,7 +114,8 @@ class CreatePost : Fragment() {
             dialog.dismiss()
             binding.appChipGroup.visible()
         }
-        categoryBottomSheetBinding.QuickCommerce.setOnClickThrottleBounceListener {
+
+        categoryBottomSheetBinding.Pharmaceuticals.setOnClickThrottleBounceListener {
             PrefManager.setSelectedCategory(Endpoints.categories.Pharmaceuticals)
             binding.category.setText(Endpoints.categories.Pharmaceuticals)
             setUpChipSelect(requireContext(), Endpoints.categories.Pharmaceuticals)
@@ -155,10 +155,11 @@ class CreatePost : Fragment() {
             binding.appChipGroup.visible()
         }
 
-        dialog.setCancelable(true) // Make the dialog cancelable if needed
+        dialog.setCancelable(true)
         dialog.setContentView(categoryBottomSheetBinding.root)
         dialog.show()
     }
+
 
 
     private fun setUpChipSelect(context: Context, selectedCategory: String) {

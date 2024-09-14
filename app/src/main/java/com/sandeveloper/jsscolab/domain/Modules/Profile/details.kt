@@ -6,5 +6,6 @@ data class details(
     val full_name:String,
     val admission_number:String,
     val address:String,
-    val photo:String
+    val photo:String,
+    val FCM_TOKEN:String
 )

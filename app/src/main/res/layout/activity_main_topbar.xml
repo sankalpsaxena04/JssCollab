@@ -36,17 +36,17 @@
 
 
         <ImageView
-            android:id="@+id/btnNext"
+            android:id="@+id/notificationButton"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:src="@drawable/baseline_notifications_24"
             android:visibility="visible"
             android:layout_marginHorizontal="15dp"
-            app:layout_constraintEnd_toStartOf="@+id/circleImageView"
+            app:layout_constraintEnd_toStartOf="@+id/userProfile"
             app:tint="#7E7E7E" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageView"
+            android:id="@+id/userProfile"
             android:layout_width="36dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"

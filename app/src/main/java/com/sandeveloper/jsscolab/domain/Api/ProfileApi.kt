@@ -1,7 +1,5 @@
 package com.sandeveloper.jsscolab.domain.Api
 
-import android.media.tv.CommandResponse
-import com.google.gson.JsonObject
 import com.sandeveloper.jsscolab.domain.Modules.Profile.BanStatusResponse
 import com.sandeveloper.jsscolab.domain.Modules.Profile.CreateProfile
 import com.sandeveloper.jsscolab.domain.Modules.Profile.MyProfileResponse
@@ -56,7 +54,7 @@ interface ProfileApi {
     // mapOf("user_id" to user_id)
 
     @DELETE("/delete-account")
-    suspend fun deleteAccount(): Response<CommandResponse>
+    suspend fun deleteAccount(): Response<commonResponse>
 
     @GET("/is-banned")
     suspend fun isBanned(): Response<BanStatusResponse>

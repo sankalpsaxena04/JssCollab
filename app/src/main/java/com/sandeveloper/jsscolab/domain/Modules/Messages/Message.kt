@@ -1,5 +1,6 @@
 package com.sandeveloper.jsscolab.domain.Modules.Messages
 
+import com.sandeveloper.jsscolab.domain.Modules.Post.Sender
 import java.util.Date
 
 data class Message(
@@ -7,5 +8,5 @@ data class Message(
 //    val user2:String,
     val sender:String,
     val text:String,
-    val timeSent: Date
+    val timeSent: Long
 )

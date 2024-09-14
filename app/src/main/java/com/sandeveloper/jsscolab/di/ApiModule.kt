@@ -10,29 +10,24 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
-
 @Module
 @InstallIn(SingletonComponent::class)
 class ApiModule {
-
-    private var context: Context? = null
-
-    fun AppModule(context: Context?) {
-        this.context = context
-    }
 
     @Singleton
     @Provides
     fun provideRetrofitBuilder(): Retrofit.Builder {
         return Retrofit.Builder()
-            .baseUrl("BASE_URL"+"/api")
+            .baseUrl("https://BASE_URL" + "/api/")
             .addConverterFactory(GsonConverterFactory.create())
     }
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
+    @Named("authClient")
+    fun provideAuthOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .build()
@@ -40,22 +35,22 @@ class ApiModule {
 
     @Singleton
     @Provides
+    @Named("defaultClient")
     fun provideDefaultOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor { chain->
+        return OkHttpClient.Builder().addInterceptor { chain ->
             val originalRequest = chain.request()
             val newUrl = originalRequest.url.newBuilder().addPathSegment("auth").build()
             val newRequest = originalRequest.newBuilder().url(newUrl).build()
             chain.proceed(newRequest)
-
         }.build()
     }
 
-    private fun createServiceWithPathPrefix(
+    private fun <T> createServiceWithPathPrefix(
         retrofitBuilder: Retrofit.Builder,
         okHttpClient: OkHttpClient,
-        serviceClass: Class<*>,
+        serviceClass: Class<T>,
         pathPrefix: String
-    ): Any {
+    ): T {
         return retrofitBuilder
             .client(okHttpClient.newBuilder().addInterceptor { chain ->
                 val originalRequest = chain.request()
@@ -70,10 +65,11 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideAuthApi(
-        retrofitBuilder: Retrofit.Builder
+        retrofitBuilder: Retrofit.Builder,
+        @Named("defaultClient") okHttpClient: OkHttpClient // Use named qualifier here
     ): AuthApi {
         return retrofitBuilder
-            .client(provideDefaultOkHttpClient())
+            .client(okHttpClient)
             .build()
             .create(AuthApi::class.java)
     }
@@ -82,50 +78,44 @@ class ApiModule {
     @Provides
     fun provideProfileApi(
         retrofitBuilder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
+        @Named("authClient") okHttpClient: OkHttpClient // Use named qualifier here
     ): ProfileApi {
-        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, ProfileApi::class.java, "profile") as ProfileApi
+        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, ProfileApi::class.java, "profile")
     }
 
     @Singleton
     @Provides
     fun provideSwapApi(
         retrofitBuilder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
+        @Named("authClient") okHttpClient: OkHttpClient // Use named qualifier here
     ): SwapApi {
-        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, SwapApi::class.java, "swap") as SwapApi
+        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, SwapApi::class.java, "swap")
     }
 
     @Singleton
     @Provides
     fun provideCoshopApi(
         retrofitBuilder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
+        @Named("authClient") okHttpClient: OkHttpClient // Use named qualifier here
     ): CoshopApi {
-        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, CoshopApi::class.java, "coshop") as CoshopApi
+        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, CoshopApi::class.java, "coshop")
     }
 
     @Singleton
     @Provides
     fun provideAppsApi(
         retrofitBuilder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
+        @Named("authClient") okHttpClient: OkHttpClient // Use named qualifier here
     ): appsApi {
-        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, appsApi::class.java, "apps") as appsApi
+        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, appsApi::class.java, "apps")
     }
 
     @Singleton
     @Provides
     fun provideMessageApi(
         retrofitBuilder: Retrofit.Builder,
-        okHttpClient: OkHttpClient
-    ): messageApi {
-        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, messageApi::class.java, "messages") as messageApi
-    }
-
-    @Provides
-    @Singleton
-    fun provideContext(): Context? {
-        return context
+        @Named("authClient") okHttpClient: OkHttpClient // Use named qualifier here
+    ): MessageApi {
+        return createServiceWithPathPrefix(retrofitBuilder, okHttpClient, MessageApi::class.java, "messages")
     }
 }

@@ -9,6 +9,14 @@
         android:id="@+id/nav_home"
         android:name="com.sandeveloper.jsscolab.presentation.Main.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_profile"
+            app:destination="@id/profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.sandeveloper.jsscolab.presentation.Main.Profile"
+        android:label="Profile" />
 
 </navigation>

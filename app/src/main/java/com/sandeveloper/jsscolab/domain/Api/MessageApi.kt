@@ -13,7 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
 
-interface messageApi {
+interface MessageApi {
 
     @POST("/create-room")
     suspend fun createRoom(

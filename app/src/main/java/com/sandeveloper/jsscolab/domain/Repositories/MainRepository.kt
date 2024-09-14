@@ -38,7 +38,7 @@ class MainRepository @Inject constructor(  private val api: appsApi) :AppsReposi
             serverResult = serverResult,
             onSuccess = {
                 if(it.success) {
-                    val groupedApps = it.apps!!.groupBy { it.category }
+                    val groupedApps = it.apps!!.groupBy { it.name }
                      val resultList = mutableListOf<Map<String, List<String>>>()
                     for ((category, appList) in groupedApps) {
                         val appNames = appList.map { it.name }

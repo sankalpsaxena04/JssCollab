@@ -10,6 +10,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.sandeveloper.jsscolab.domain.Constants.Endpoints
 import com.sandeveloper.jsscolab.domain.HelperClasses.PrefManager.sharedPreferences
+import com.sandeveloper.jsscolab.domain.Modules.Profile.details
 import java.util.concurrent.ConcurrentHashMap
 
 object PrefManager {
@@ -112,7 +113,37 @@ object PrefManager {
         } else {
             emptyList()
         }
+    }
 
+    fun getcurrentUserdetails():details{
 
+        val full_name = sharedPreferences.getString(Endpoints.User.FULLNAME, "")
+        val email = sharedPreferences.getString(Endpoints.User.EMAIL, "")
+        val phone = sharedPreferences.getString(Endpoints.User.PHONE, "")
+        val dp_url = sharedPreferences.getString(Endpoints.User.DP_URL, "")
+        val fcm= sharedPreferences.getString(Endpoints.User.FCM_TOKEN,"")
+        val admn_no = sharedPreferences.getString(Endpoints.User.ADMN_NUMBER,"")
+        val address = sharedPreferences.getString(Endpoints.User.ADDRESS,"")
+        return details(email =  email!!, full_name = full_name!!, phone = phone!!.toLong()!!, photo = dp_url!!, admission_number = admn_no!!, address = address!!,FCM_TOKEN = fcm!!)
+    }
+
+    fun setcurrentUserdetails(user:details){
+        editor.putString(Endpoints.User.FULLNAME,user.full_name)
+        editor.putString(Endpoints.User.PHONE,user.phone.toString())
+        editor.putString(Endpoints.User.EMAIL,user.email)
+        editor.putString(Endpoints.User.ADDRESS,user.address)
+        editor.putString(Endpoints.User.DP_URL,user.photo)
+        editor.putString(Endpoints.User.ADMN_NUMBER,user.admission_number)
+        editor.putString(Endpoints.User.FCM_TOKEN,user.FCM_TOKEN)
+
+        editor.apply()
+    }
+    fun getUserFCMToken(): String {
+        return getcurrentUserdetails().FCM_TOKEN
+    }
+
+    fun setUserFCMToken(token : String){
+        editor.putString(Endpoints.User.FCM_TOKEN,token)
+        editor.apply()
     }
 }

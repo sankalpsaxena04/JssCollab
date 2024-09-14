@@ -13,6 +13,8 @@ import com.sandeveloper.jsscolab.domain.Constants.NotificationType
 //import com.sandeveloper.jsscolab.domain.Models.FCMNotification
 import com.sandeveloper.jsscolab.domain.Models.ServerResult
 import com.sandeveloper.jsscolab.domain.Api.NotificationApiService
+import com.sandeveloper.jsscolab.domain.HelperClasses.NotificationBuilderUtil
+import com.sandeveloper.jsscolab.domain.Models.FCMNotification
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber
@@ -44,7 +46,7 @@ class NotificationsFCMWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     @Assisted val notificationApiService: NotificationApiService,
-        ) : CoroutineWorker(context, workerParameters)  {
+) : CoroutineWorker(context, workerParameters)  {
 
     private val _resultLiveData =  MutableLiveData<ServerResult<String>>()
     val resultLiveData:LiveData<ServerResult<String>> get() = _resultLiveData
@@ -86,16 +88,16 @@ class NotificationsFCMWorker @AssistedInject constructor(
             _resultLiveData.postValue(ServerResult.Failure(e))
             Result.retry()
         }
-//         catch (e:Exception){
-//            Timber.tag(TAG).d("Failed : ${e.message}")
-//            _resultLiveData.postValue(ServerResult.Failure(e))
-//             val failedNotif = FCMNotification(
-//                 NotificationType.REQUEST_FAILED_NOTIFICATION,
-//                 "Request Sending Failed for #12345","Click here for resending request",
-//                 "Cause due to -> ${e.message}")
-//            NotificationBuilderUtil.showNotification(notification = failedNotif, context = applicationContext)
-//            Result.failure()
-//        }
+        catch (e:Exception){
+            Timber.tag(TAG).d("Failed : ${e.message}")
+            _resultLiveData.postValue(ServerResult.Failure(e))
+            val failedNotif = FCMNotification(
+                NotificationType.REQUEST_FAILED_NOTIFICATION,
+                "Request Sending Failed for #12345","Click here for resending request",
+                "Cause due to -> ${e.message}")
+            NotificationBuilderUtil.showNotification(notification = failedNotif, context = applicationContext)
+            Result.failure()
+        }
     }
 
 
@@ -105,7 +107,6 @@ class NotificationsFCMWorker @AssistedInject constructor(
     }
 
 }
-
 
 //        notificationApiService.sendNotification(payload)
 //            .enqueue(object : retrofit2.Callback<JsonObject> {

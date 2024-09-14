@@ -7,9 +7,11 @@
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.Main.home.HomeFragment">
-<ScrollView
+<androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,6 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="visible"/>
         <EditText
+            android:elevation="8dp"
             android:layout_margin="8dp"
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
@@ -63,17 +66,29 @@
         android:layout_below="@+id/recyclerView_icons"
         android:layout_marginHorizontal="10dp" />
 
-    <!-- RecyclerView for posts -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_posts"
+    <TextView
+        android:id="@+id/recentPosts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Recent Posts"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/lexendextrabold"
         app:layout_constraintTop_toBottomOf="@id/bannerRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="16dp"
-         />
+        android:layout_marginHorizontal="16dp"
+        android:textSize="16dp"
+        />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_posts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recentPosts" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
 </RelativeLayout>

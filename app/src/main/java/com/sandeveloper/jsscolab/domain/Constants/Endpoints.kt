@@ -89,10 +89,10 @@ object Endpoints {
         const val EMAIL = "EMAIL"
         const val USERNAME = "USERNAME"
         const val FULLNAME="FULLNAME"
-        const val BIO = "BIO"
-        const val DESIGNATION = "DESIGNATION"
-        const val ROLE = "ROLE"
+        const val PHONE = "PHONE"
+        const val ADDRESS = "ADDRESS"
         const val PHOTO_ADDED = "PHOTO_ADDED"
+        const val ADMN_NUMBER = "ADMISSION_NUMBER"
         const val DETAILS_ADDED = "DETAILS_ADDED"
         const val EMAIL_VERIFIED="EMAIL_VERIFIED"
         const val NOTIFICATION_TIME_STAMP = "NOTIFICATION_LAST_SEEN"
@@ -157,8 +157,7 @@ object Endpoints {
         const val BODY: String = "body"
         const val DATA: String = "data"
         const val TYPE: String = "type"
-        const val project_id:String = "projectID"
-        const val orgID:String="orgID"
+        const val ADDRESS:String = "address"
 
         object Groups{
             const val COMMENT_NOTIF_GROUP: String = "Comment_Notification_Group"

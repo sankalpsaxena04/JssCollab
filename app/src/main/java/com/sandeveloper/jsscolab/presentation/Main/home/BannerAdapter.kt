@@ -3,13 +3,15 @@ package com.sandeveloper.jsscolab.presentation.Main.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.sandeveloper.jsscolab.R
 import com.sandeveloper.jsscolab.databinding.ItemBannerBinding
 
-class BannerAdapter(private val banners: List<Int>) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
+class BannerAdapter(private val banners: List<String>) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
 
     inner class BannerViewHolder(private val binding: ItemBannerBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(bannerResId: Int) {
-            binding.bannerImage.setImageResource(bannerResId)
+        fun bind(bannerImg: String) {
+            Glide.with(binding.root.context).load(bannerImg).placeholder(R.drawable.placeholder).into(binding.bannerImage)
         }
     }
 

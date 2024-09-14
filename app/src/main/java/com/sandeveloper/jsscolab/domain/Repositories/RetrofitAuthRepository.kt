@@ -216,7 +216,7 @@ class RetrofitAuthRepository @Inject constructor(
     }
 
     override suspend fun deleteAccount(
-        serverResult: (ServerResult<CommandResponse>) -> Unit
+        serverResult: (ServerResult<commonResponse>) -> Unit
     ) {
         handleApiResponse(
             apiCall = { profileApi.deleteAccount() },

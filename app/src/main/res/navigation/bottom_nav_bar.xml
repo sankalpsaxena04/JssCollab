@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Home Fragment Option -->
+    <item
+        android:id="@+id/nav_home_act"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+
+
+    <item
+        android:id="@+id/nav_create_post"
+        android:icon="@drawable/baseline_add_box_24"
+        android:title="Create Post" />
+
+    <!-- Messages Activity Option -->
+    <item
+        android:id="@+id/nav_messages"
+        android:icon="@drawable/ic_chat"
+        android:title="Messages" />
+    <item
+        android:id="@+id/nav_more"
+        android:icon="@drawable/more"
+        android:title="More" />
+</menu>

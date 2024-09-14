@@ -6,8 +6,8 @@ data class postUnit(
     val app: App,
     val category: String,
     val comment: String,
-    val sender_contribution: String,
+    val sender_contribution: Number,
     val filter: Filter,
-    val total_required_amount: String,
+    val total_required_amount: Number,
     val expiration_date: Long
 )

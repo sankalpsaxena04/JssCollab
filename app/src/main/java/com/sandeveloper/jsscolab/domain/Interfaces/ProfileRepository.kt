@@ -1,6 +1,5 @@
 package com.sandeveloper.jsscolab.domain.Interfaces
 
-import android.media.tv.CommandResponse
 import com.sandeveloper.jsscolab.domain.Models.ServerResult
 import com.sandeveloper.jsscolab.domain.Modules.Profile.BanStatusResponse
 import com.sandeveloper.jsscolab.domain.Modules.Profile.CreateProfile
@@ -53,7 +52,7 @@ interface ProfileRepository {
     )
 
     suspend fun deleteAccount(
-        serverResult: (ServerResult<CommandResponse>) -> Unit
+        serverResult: (ServerResult<commonResponse>) -> Unit
     )
 
     suspend fun isBanned(
