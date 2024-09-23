@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/broad_category_nav.xml"
+    app:startDestination="@id/categoryListFragment">
+
+    <fragment
+        android:id="@+id/categoryListFragment"
+        android:name="com.sandeveloper.jsscolab.presentation.Main.BroadCategoryPostsFragment"
+        android:label="CategoryListFragment" >
+        <action
+            android:id="@+id/action_categoryListFragment_to_createPost2"
+            app:destination="@id/createPost2" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPost2"
+        android:name="com.sandeveloper.jsscolab.presentation.Main.CreatePost"
+        android:label="fragment_create_post"
+        tools:layout="@layout/fragment_create_post" />
+</navigation>

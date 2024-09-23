@@ -1,11 +1,12 @@
 package com.sandeveloper.jsscolab.domain.Modules.Profile
 
+import com.sandeveloper.jsscolab.domain.Modules.Post.Photo
+
 data class details(
-    val phone:Long,
-    val email:String,
-    val full_name:String,
-    val admission_number:String,
-    val address:String,
-    val photo:String,
-    val FCM_TOKEN:String
+    val phone:String?,
+    val email:String?,
+    val full_name:String?,
+    val admission_number:String?,
+    val address:String?,
+    val photo:Photo?
 )

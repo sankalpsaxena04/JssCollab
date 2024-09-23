@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/chooserFragment"
-        android:name="com.sandeveloper.jsscolab.presentation.Auth.ChooseScreen.ChooserFragment"
+        android:name="com.sandeveloper.jsscolab.presentation.Auth.ChooseScreen.ChooseFragment"
         android:label="ChooserFragment" >
         <action
             android:id="@+id/action_chooserFragment_to_loginScreen"
@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_chooserFragment_to_signupScreen"
             app:destination="@id/signupScreen" />
+        <action
+            android:id="@+id/action_chooserFragment_to_signUpProfile"
+            app:destination="@id/signUpProfile" />
     </fragment>
     <fragment
         android:id="@+id/loginScreen"
@@ -34,20 +37,12 @@
         android:label="fragment_o_t_p_verification"
         tools:layout="@layout/fragment_o_t_p_verification" >
         <action
-            android:id="@+id/action_OTPVerification_to_userDetailsScreen"
-            app:destination="@id/profilePicture" />
-        <action
             android:id="@+id/action_OTPVerification_to_signupScreen"
             app:destination="@id/signupScreen" />
         <action
-            android:id="@+id/action_OTPVerification_to_profilePicture"
-            app:destination="@id/profilePicture" />
+            android:id="@+id/action_OTPVerification_to_signUpProfile"
+            app:destination="@id/signUpProfile" />
     </fragment>
-    <fragment
-        android:id="@+id/profilePicture"
-        android:name="com.sandeveloper.jsscolab.presentation.Auth.Signup.SignUpProfile.SignUpProfile"
-        android:label="fragment_profile_picture"
-        tools:layout="@layout/fragment_signup_profile" />
     <fragment
         android:id="@+id/resetPassword"
         android:name="com.sandeveloper.jsscolab.presentation.Auth.Login.NewPassword"
@@ -72,5 +67,9 @@
             android:id="@+id/action_signupScreen_to_loginScreen"
             app:destination="@id/loginScreen" />
     </fragment>
+    <fragment
+        android:id="@+id/signUpProfile"
+        android:name="com.sandeveloper.jsscolab.presentation.Auth.Signup.SignUpProfile.SignUpProfile"
+        android:label="SignUpProfile" />
 
 </navigation>

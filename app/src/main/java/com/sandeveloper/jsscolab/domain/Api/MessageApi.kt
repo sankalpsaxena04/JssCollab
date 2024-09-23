@@ -4,6 +4,7 @@ import com.sandeveloper.jsscolab.domain.Modules.Messages.CheckForMessagesRespons
 import com.sandeveloper.jsscolab.domain.Modules.Messages.GetMessagesResponse
 import com.sandeveloper.jsscolab.domain.Modules.Messages.RoomIdResponse
 import com.sandeveloper.jsscolab.domain.Modules.Messages.SendMessageRequest
+import com.sandeveloper.jsscolab.domain.Modules.Messages.userProfileResponse
 import com.sandeveloper.jsscolab.domain.Modules.commonResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -15,33 +16,32 @@ import retrofit2.http.Query
 
 interface MessageApi {
 
-    @POST("/create-room")
-    suspend fun createRoom(
-        @Body createRoomRequest: Map<String,String>
-    ): Response<RoomIdResponse>
     //mapOf("user_id" to user_id)
 
-    @GET("/get-room-id")
+    @GET("messages/get-room-id")
     suspend fun getRoomId(
-        @Query("user_id") user_id: String
+        @Body createRoomRequest: Map<String,String>
     ): Response<RoomIdResponse>
 
-    @GET("/get-messages")
+    @GET("messages/get-messages")
     suspend fun getMessages(
         @Query("room_id") room_id: String,
     ): Response<GetMessagesResponse>
 
-    @PUT("/send-message")
+    @PUT("messages/send-message")
     suspend fun sendMessage(
         @Body sendMessageRequest: SendMessageRequest
     ): Response<commonResponse>
 
-    @GET("/check-for-messages")
+    @GET("messages/check-for-messages")
     suspend fun checkForMessages(
         @Query("room_id") room_id: String,
     ): Response<CheckForMessagesResponse>
 
-    @DELETE("/delete-messages")
+    @GET("messages/get-user-profile")
+    suspend fun getUserProfile( @Query("room_id") room_id: String, @Query("user_id") userId:String):Response<userProfileResponse>
+
+    @DELETE("messages/delete-messages")
     suspend fun deleteMessages(
         @Query("room_id") room_id: String
     ): Response<commonResponse>

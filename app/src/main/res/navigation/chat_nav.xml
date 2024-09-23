@@ -3,20 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/chat_nav.xml"
-    app:startDestination="@id/chatInbox">
-
+    app:startDestination="@id/chatFragment">
     <fragment
-        android:id="@+id/chatInbox"
-        android:name="com.sandeveloper.jsscolab.presentation.Main.chat.ChatInbox"
-        android:label="fragment_chat_list"
-        tools:layout="@layout/fragment_chat_inbox" >
-        <action
-            android:id="@+id/action_chatInbox_to_chat"
-            app:destination="@id/chat" />
-    </fragment>
-    <fragment
-        android:id="@+id/chat"
-        android:name="com.sandeveloper.jsscolab.presentation.Main.chat.Chat"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        android:id="@+id/chatFragment"
+        android:name="com.sandeveloper.jsscolab.presentation.Main.chat.ChatFragment"
+        android:label="ChatFragment" />
 </navigation>

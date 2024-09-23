@@ -14,195 +14,246 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent" >
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:id="@+id/constraintLayout"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    >
-    <ImageView
-        android:id="@+id/app_background_blur"
-        android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder"
-        android:alpha="0.3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Blurred app logo in background -->
-
-
-    <!-- Dark overlay to ensure visibility of foreground content -->
-
-    <!-- Post creator's photo (Larger size) -->
-    <View
-        android:id="@+id/dark_overlay"
-        android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:alpha="0.5"
-        android:background="#DF4A4A4A"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewImage"
-        app:cardCornerRadius="40dp"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/constraintLayout"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/creator_photo"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/profile_pic_placeholder"
-        />
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/creator_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="12dp"
-        android:text="Creator's Name"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/cardViewImage"
-        app:layout_constraintTop_toTopOf="@id/cardViewImage" />
-
-    <TextView
-        android:id="@+id/expiration_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Expires in: 24 Hours"
-        android:textColor="@color/better_white"
-        app:layout_constraintBottom_toBottomOf="@+id/creator_name"
-        app:layout_constraintStart_toEndOf="@+id/creator_name"
-        app:layout_constraintTop_toTopOf="@+id/creator_name" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        android:layout_marginTop="-9dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewImage"
-        app:layout_constraintStart_toStartOf="@+id/cardViewImage"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewImage">
-
+        android:background="@color/white"
+        >
         <LinearLayout
-            android:id="@+id/rating_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#CDFF5722"
             android:orientation="horizontal"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="2dp">
+            android:gravity="fill_horizontal"
+            android:id="@+id/layoutTop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:paddingEnd="4dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
 
-            <!-- Rating Icon -->
-            <ImageView
-                android:id="@+id/rating_icon"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+
+                <androidx.cardview.widget.CardView
+
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="4dp"
+                    android:id="@+id/contentIconCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+                <ImageView
+                    android:id="@+id/contentIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="168dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.cardview.widget.CardView>
+                <LinearLayout
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="2dp"
+                    android:background="@drawable/item_clock_bg"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="time icon"
+                        android:src="@drawable/clock" />
+
+                    <TextView
+
+                        android:layout_marginEnd="4dp"
+                        android:id="@+id/expiration_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Expires in: 24 Hours"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_weight="0.5"
+                android:foregroundGravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/star" />
+                android:layout_margin="4dp"
+                >
 
-            <!-- Rating Text -->
-            <TextView
-                android:id="@+id/rating_text"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:cardCornerRadius="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/creator_photo"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/profile_pic_placeholder" />
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    android:layout_marginTop="-9dp"
+                    app:layout_constraintEnd_toEndOf="@+id/cardViewImage"
+                    app:layout_constraintStart_toStartOf="@+id/cardViewImage"
+                    app:layout_constraintTop_toBottomOf="@+id/cardViewImage">
+
+                    <LinearLayout
+                        android:id="@+id/rating_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#CDFF5722"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="2dp">
+
+                        <!-- Rating Icon -->
+                        <ImageView
+                            android:id="@+id/rating_icon"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="4dp"
+                            android:src="@drawable/star" />
+
+                        <!-- Rating Text -->
+                        <TextView
+                            android:id="@+id/rating_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4.3"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/creator_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/lexendblack"
+                    android:gravity="center"
+                    android:text="John Doe"
+                    app:layout_constraintEnd_toEndOf="@+id/cardViewImage"
+                    app:layout_constraintStart_toStartOf="@+id/cardViewImage"
+                    app:layout_constraintTop_toBottomOf="@id/cardViewImage" />
+
+                <TextView
+                    android:id="@+id/category_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/lexendregular"
+                    android:gravity="center"
+                    android:text="QuickCommerce"
+                    app:layout_constraintStart_toStartOf="@id/cardViewImage"
+                    app:layout_constraintEnd_toEndOf="@+id/cardViewImage"
+                    app:layout_constraintTop_toBottomOf="@id/creator_name" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="3dp"
+            android:orientation="vertical"
+            android:paddingTop="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/layoutmid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/contributionCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4.3"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="4dp"
+
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:id="@+id/contribution_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/s1bg"
+                    android:paddingHorizontal="2dp"
+                    android:text="₹800"
+                    android:textColor="@color/black200"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <ProgressBar
+                android:id="@+id/contribution_progress"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:max="100"
+                android:outlineAmbientShadowColor="@color/primary"
+                android:paddingHorizontal="16dp"
+                android:progress="60" />
+
+            <TextView
+                android:id="@+id/total_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="2dp"
+                android:text="₹1200"
+                android:textColor="@color/black200"
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:id="@+id/layoutmid"
 
-    <TextView
-        android:id="@+id/app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="ApplicationName"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="@+id/creator_name"
-        app:layout_constraintTop_toBottomOf="@+id/creator_name" />
+            android:background="@color/transparent"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginVertical="2dp"
+            android:paddingBottom="4dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+            <TextView
+                android:background="@color/transparent"
+                android:id="@+id/post_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:minLines="1"
+                android:maxLines="2"
+                android:fontFamily="@font/lexendregular"/>
 
-    <TextView
-        android:id="@+id/post_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:maxLines="2"
-        android:text="Detailed post description goes here..."
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/app_name"
-        app:layout_constraintTop_toBottomOf="@+id/app_name" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginTop="4dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_description">
-
-    <TextView
-        android:id="@+id/contribution_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="₹800"
-        android:paddingStart="20dp"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        android:textStyle="bold"
-      />
-
-    <ProgressBar
-        android:id="@+id/contribution_progress"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:paddingHorizontal="16dp"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="60"
-         />
-
-    <TextView
-        android:id="@+id/total_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_gravity="end"
-        android:text="₹1200"
-        android:layout_marginHorizontal="16dp"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

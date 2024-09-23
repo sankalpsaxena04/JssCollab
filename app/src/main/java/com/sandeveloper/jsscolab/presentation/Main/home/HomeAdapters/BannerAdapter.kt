@@ -1,4 +1,4 @@
-package com.sandeveloper.jsscolab.presentation.Main.home
+package com.sandeveloper.jsscolab.presentation.Main.home.HomeAdapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

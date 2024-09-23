@@ -19,7 +19,7 @@ class NotificationService:FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        if (PrefManager.getUserFCMToken()!="" || PrefManager.getUserFCMToken().isNotEmpty()){
+        if (PrefManager.getUserFCMToken()!="" || PrefManager.getUserFCMToken()!!.isNotEmpty()){
             Timber.tag("SellerFirebaseService ").i("Message :: %s", message.data)
 
             val type = message.data[N.TYPE]

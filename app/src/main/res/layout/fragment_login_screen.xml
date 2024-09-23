@@ -1,14 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".presentation.Auth.Login.LoginScreen">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <TextView
+    <include
+        android:id="@+id/toolbar"
+        style="@style/ToolbarStyle"
+        layout="@layout/action_bar_back"
+        />
+
+
+
+    <RelativeLayout
+        android:id="@+id/containerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="@dimen/container_layout_margin"
+        android:layout_marginTop="@dimen/container_layout_margin"
+        android:layout_marginEnd="@dimen/container_layout_margin"
+        android:layout_marginBottom="@dimen/container_layout_margin">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/verify_phone_no."
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp"
+            style="@style/LabelStyle"
+            android:textStyle="bold"
+            android:text="Welcome back!"
+            android:textColor="@color/secondary_bg" />
+        <TextView
+            android:id="@+id/will_send_otp"
+            style="@style/LabelStyle2"
+            android:textColor="@color/secondary_bg"
+            android:layout_below="@id/verify_phone_no."
+            android:layout_marginTop="16dp"
+            android:text="Enter your phone no. and password to stars using the application." />
+        <TextView
+            android:id="@+id/enter_phone_no_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/will_send_otp"
+            android:layout_marginTop="35dp"
+            android:text="@string/enter_mobile_no"/>
+        <EditText
+            android:drawableStart="@drawable/baseline_phone_24"
+            android:id="@+id/et_phone"
+            style="@style/EditTextStyle"
+            android:drawablePadding="12dp"
+            android:layout_below="@id/enter_phone_no_textview"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/primary"
+            android:hint="@string/_92xxxxxxxx"
+            android:inputType="textEmailAddress" />
+        <EditText
+            android:id="@+id/password"
+            android:drawableStart="@drawable/baseline_password_24"
+            android:drawablePadding="12dp"
+            style="@style/EditTextStyle"
+            android:maxLength="10"
+            android:layout_below="@id/et_phone"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/primary"
+            android:hint="********"
+            android:inputType="textPassword" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/login"
+            style="@style/SolidButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/solid_bg"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="22dp" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/login_nav"
+            app:lottie_rawRes="@raw/loader_anim"
+            app:lottie_autoPlay="true"
+            android:visibility="invisible"
+            android:layout_marginTop="@dimen/margin_top_30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_loop="true"/>
+
+
+        <RelativeLayout
+            android:id="@+id/login_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/SignUp"
+                style="@style/LabelStyle"
+                android:text="@string/dont_have_account"
+                android:textColor="@color/account"
+                android:textSize="16sp" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

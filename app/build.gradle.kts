@@ -1,11 +1,24 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.firebase.perf)
+//    alias(libs.plugins.firebase.perf)
     alias(libs.plugins.google.services)
+}
+fun getProps(propName: String): String? {
+    val propsFile = rootProject.file("local.properties")
+    return if (propsFile.exists()) {
+        val props = Properties()
+        props.load(FileInputStream(propsFile))
+        props.getProperty(propName)
+    } else {
+        throw NullPointerException("local.properties file not found.")
+    }
 }
 
 android {
@@ -48,7 +61,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
+    buildTypes{
+        debug {
+            buildConfigField("String", "BASE_URL", "\"${getProps("DEBUG_BASE_URL")}\"")
+        }
+        release {
+            buildConfigField("String", "BASE_URL", "\"${getProps("RELEASE_BASE_URL")}\"")
+        }
+    }
 }
 
 
@@ -64,6 +84,7 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.play.services.pal)
     testImplementation(libs.junit)
     implementation(libs.androidx.recyclerview)
     androidTestImplementation(libs.androidx.junit)
@@ -143,9 +164,10 @@ dependencies {
     implementation(libs.engine.io.client)
 
     //firebase
+    implementation (libs.firebase.core)
     implementation(platform(libs.firebase.bom.v3320))
     implementation(libs.google.firebase.messaging.ktx)
-    implementation(libs.firebase.analytics)
+//    implementation(libs.firebase.analytics)
     implementation("io.socket:socket.io-client:2.0.0") {
         exclude(group = "org.json", module = "json")
     }

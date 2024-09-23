@@ -9,8 +9,8 @@
     <!-- Profile Picture using CircleImageView -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:src="@drawable/profile_pic_placeholder"
@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profileImageView"
         style="@style/EditTextStyle"
+        android:textColor="@color/pureblack"
         android:hint="Name"
         android:inputType="textPersonName"
         android:layout_marginTop="16dp"/>
@@ -33,16 +34,17 @@
         android:id="@+id/admissionNumberEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/pureblack"
         style="@style/EditTextStyle"
         android:layout_below="@id/nameEditText"
         android:hint="Admission Number"
-        android:inputType="number"
         android:layout_marginTop="16dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/pureblack"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
         android:layout_below="@id/admissionNumberEditText"
         android:layout_marginTop="16dp">
@@ -58,35 +60,13 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/hostelId_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loc"
-        android:layout_alignStart="@+id/loc"
-        android:layout_alignEnd="@+id/loc"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="-1dp"
-        android:text="Insert hostel id for verification" />
-
-    <ImageView
-        android:visibility="gone"
-        android:id="@+id/hosteId"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_below="@id/hostelId_text"
-        android:layout_alignStart="@+id/loc"
-        android:layout_alignEnd="@+id/loc"
-        android:src="@drawable/profile_pic_placeholder"
-        android:scaleType="fitCenter" />
     <EditText
         android:id="@+id/emailId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/EditTextStyle"
-        android:layout_below="@id/hosteId"
+        android:textColor="@color/pureblack"
+        android:layout_below="@id/loc"
         android:hint="example@gmail.com"
         android:inputType="textEmailAddress"
         android:layout_marginTop="16dp"/>
@@ -95,20 +75,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/EditTextStyle"
+        android:textColor="@color/pureblack"
         android:layout_below="@id/emailId"
         android:hint="Password"
         android:inputType="textPassword"
         android:layout_marginTop="16dp"/>
 
+    <EditText
+        android:id="@+id/reEnterPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/EditTextStyle"
+        android:layout_below="@id/password"
+        android:textColor="@color/pureblack"
+        android:hint="Re-Enter Password"
+        android:inputType="textPassword"
+        android:layout_marginTop="16dp"/>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/SignUp"
         style="@style/SolidButtonStyle"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:background="@drawable/solid_bg"
-        android:text="SIgnUp"
+        android:text="SignUp"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="22dp" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/reEnterPassword"
+        app:lottie_rawRes="@raw/loader_anim"
+        app:lottie_autoPlay="true"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_top_30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_loop="true"/>
 
 </RelativeLayout>

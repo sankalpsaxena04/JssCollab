@@ -47,6 +47,7 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if(tab!=null)
                 viewPager2.currentItem = tab.position
+                tab!!.icon?.setTint(resources.getColor(R.color.primary))
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {

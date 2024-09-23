@@ -1,26 +1,29 @@
 package com.sandeveloper.jsscolab.domain.Modules
 
-import com.sandeveloper.jsscolab.domain.Modules.Post.postUnit
+import com.sandeveloper.jsscolab.domain.Modules.Post.Posts
 
 data class PostForView(
     val comment: String,
     val senderContribution: Number,
     val totalRequiredAmount: Number,
     val fullName: String,
-    val userphoto: String,
+    val userphoto: String?,
     val rating: Number,
-    val appName: String,
-    val appphoto: String
+    val category: String,
+    val expiresIn: String
+//    val appphoto: String?
 )
-fun postUnit.toPostSummary(): PostForView {
+// TODO("getappphoto from get-apps")
+fun Posts.toPostSummary(): PostForView {
     return PostForView(
-        comment = this.comment,
+        comment = this.comment?:"",
         senderContribution = this.sender_contribution,
         totalRequiredAmount = this.total_required_amount,
         fullName = this.sender!!.full_name,
-        userphoto = this.sender.photo,
+        userphoto = this.sender.photo?.secure_url,
         rating = this.sender.rating,
-        appName = this.app.name,
-        appphoto = this.app.logo
+        category = this.category,
+        expiresIn = this.expiration_date
+//        appphoto = this.apps?
     )
 }

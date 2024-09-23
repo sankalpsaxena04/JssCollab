@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/hostel_selection_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Hostels to Order Together-"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingBottom="8dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/hostel_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GH" />
+
+            <CheckBox
+                android:id="@+id/hostel_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BH" />
+
+            <CheckBox
+                android:id="@+id/hostel_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ISH" />
+            <CheckBox
+                android:id="@+id/hostel_4"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel A" />
+
+            <CheckBox
+                android:id="@+id/hostel_5"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel B" />
+
+            <CheckBox
+                android:id="@+id/hostel_6"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel C" />
+            <CheckBox
+            android:id="@+id/hostel_7"
+                android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hostel A" />
+
+            <CheckBox
+                android:id="@+id/hostel_8"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel B" />
+
+            <CheckBox
+                android:id="@+id/hostel_9"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel C" />
+            <CheckBox
+            android:id="@+id/hostel_10"
+                android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hostel A" />
+
+            <CheckBox
+                android:id="@+id/hostel_11"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel B" />
+
+            <CheckBox
+                android:id="@+id/hostel_12"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel C" />
+            <CheckBox
+            android:id="@+id/hostel_13"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hostel A" />
+
+            <CheckBox
+                android:id="@+id/hostel_14"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel B" />
+
+            <CheckBox
+                android:id="@+id/hostel_15"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel C" />
+            <CheckBox
+            android:id="@+id/hostel_16"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hostel A" />
+
+            <CheckBox
+                android:id="@+id/hostel_17"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel B" />
+
+            <CheckBox
+                android:id="@+id/hostel_18"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel C" />
+            <CheckBox
+            android:id="@+id/hostel_19"
+                android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hostel A" />
+
+            <CheckBox
+                android:id="@+id/hostel_20"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel B" />
+
+            <CheckBox
+                android:id="@+id/hostel_21"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hostel C" />
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_hostel_done"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_create"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/give_chip_group">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lexendregular"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="10dp"
+            android:text="Done"
+            android:textColor="@color/white"
+            android:textSize="28dp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</LinearLayout>

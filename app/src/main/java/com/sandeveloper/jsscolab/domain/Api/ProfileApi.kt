@@ -18,45 +18,45 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 
 interface ProfileApi {
-    @POST("/create-profile")
+    @POST("profile/create-profile")
     suspend fun createProfile(@Body createProfile: CreateProfile): Response<commonResponse>
 
-    @PATCH("/update-profile")
+    @PATCH("profile/update-profile")
     suspend fun updateProfile(
         @Body profileUpdateRequest: ProfileUpdateRequest
     ): Response<commonResponse>
 
-    @PUT("/update-picture")
+    @PUT("profile/update-picture")
     suspend fun updatePicture(
         @Body pictureUpdateRequest: PictureUpdateRequest
     ): Response<commonResponse>
 
-    @GET("/my-details")
+    @GET("profile/my-details")
     suspend fun getMyDetails(): Response<MyProfileResponse>
 
-    @GET("/my-rating")
+    @GET("profile/my-rating")
     suspend fun getMyRating(): Response<MyRatingResponse>
 
-    @POST("/rate-user")
+    @POST("profile/rate-user")
     suspend fun rateUser(
         @Body rateUserRequest: RateUserRequest
     ): Response<commonResponse>
 
-    @POST("/report-user")
+    @POST("profile/report-user")
     suspend fun reportUser(
         @Body reportUserRequest: ReportUserRequest
     ): Response<commonResponse>
 
-    @POST("/block-user")
+    @POST("profile/block-user")
     suspend fun blockUser(
         @Body blockUserRequest: Map<String,String>
     ): Response<commonResponse>
     // mapOf("user_id" to user_id)
 
-    @DELETE("/delete-account")
+    @DELETE("profile/delete-account")
     suspend fun deleteAccount(): Response<commonResponse>
 
-    @GET("/is-banned")
+    @GET("profile/is-banned")
     suspend fun isBanned(): Response<BanStatusResponse>
 
 

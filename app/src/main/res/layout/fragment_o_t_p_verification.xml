@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/white">
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/OTPVerification"
@@ -127,5 +128,18 @@
         android:layout_marginTop="32dp"
         android:layout_below="@id/tvResendOtp"
         android:layout_centerHorizontal="true"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/btnVerifyOtp"
+        app:lottie_rawRes="@raw/loader_anim"
+        app:lottie_autoPlay="true"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_top_30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_loop="true"/>
 
 </RelativeLayout>

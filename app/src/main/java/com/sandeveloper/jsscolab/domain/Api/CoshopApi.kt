@@ -13,19 +13,19 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface CoshopApi {
-    @POST("/create-post")
+    @POST("coshop/create-post")
     suspend fun createPost(@Body createPost: createPost): Response<commonResponse>
 
-    @POST("/get-posts")
+    @POST("coshop/get-posts")
     suspend fun getPosts(@Body getPosts: getPostsRequest): Response<getPostResponse>
 
-    @GET("/get-my-posts")
+    @GET("coshop/get-my-posts")
     suspend fun getMyPosts(): Response<getPostResponse>
 
-    @PATCH("/update-post")
+    @PATCH("coshop/update-post")
     suspend fun updatePost(@Body updatePost: updatePostRequest): Response<commonResponse>
 
-    @DELETE("/delete-post")
+    @DELETE("coshop/delete-post")
     suspend fun deletePost(@Body postId: Map<String,String>): Response<commonResponse>
     //mapOf("post_id" to postId)
 }

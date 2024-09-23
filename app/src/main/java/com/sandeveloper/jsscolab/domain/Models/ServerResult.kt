@@ -7,5 +7,4 @@ sealed class ServerResult<out T> {
     object Progress : ServerResult<Nothing>()
     data class Failure(val exception: Exception) : ServerResult<Nothing>()
 
-
 }

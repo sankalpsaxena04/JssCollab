@@ -3,6 +3,7 @@ package com.sandeveloper.jsscolab.di
 import android.content.Context
 import androidx.room.Room
 import com.sandeveloper.jsscolab.data.Room.AppsDatabase
+import com.sandeveloper.jsscolab.data.Room.MessageDAO
 import com.sandeveloper.jsscolab.data.Room.MessageDatabase
 import com.sandeveloper.jsscolab.data.Room.NotificationDatabase
 import dagger.Module
@@ -30,5 +31,10 @@ class DatabaseModule {
     @Provides
     fun provideNotificationDB(@ApplicationContext context: Context): NotificationDatabase {
         return Room.databaseBuilder(context,NotificationDatabase::class.java,"NotificationDB").build()
+    }
+
+    @Provides
+    fun provideMessageDao(database: MessageDatabase): MessageDAO {
+        return database.messageDAO()
     }
 }

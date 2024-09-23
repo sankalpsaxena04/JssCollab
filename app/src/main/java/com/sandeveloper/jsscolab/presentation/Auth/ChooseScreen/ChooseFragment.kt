@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChooserFragment @Inject constructor() : Fragment() {
+class ChooseFragment @Inject constructor() : Fragment() {
 
 
     private var _binding: FragmentChooseBinding? = null
@@ -41,9 +41,8 @@ class ChooserFragment @Inject constructor() : Fragment() {
 
         binding.title.animFadein(requireContext(),2000)
         binding.btnLogin.setOnClickThrottleBounceListener {
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-//            findNavController().navigate(R.id.action_chooserFragment_to_loginScreenFragment)
+
+            findNavController().navigate(R.id.action_chooserFragment_to_loginScreen)
         }
 
         binding.btnGetStarted.setOnClickThrottleBounceListener {

@@ -8,7 +8,8 @@ data class MessageEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val roomId: String,
-    val sender: String,
+    val senderId: String,
     val text: String,
-    val time:Long
+    val time: Long,
+    val isSender: Boolean
 )

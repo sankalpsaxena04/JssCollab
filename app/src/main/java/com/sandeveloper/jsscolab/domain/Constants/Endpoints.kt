@@ -6,6 +6,7 @@ object Endpoints {
     const val OFFLINE_MODE="Offline"
     const val USERS = "Users"
     const val APP_CONFIG = "AppConfig"
+
 //    const val defaultOrganisation="None"
 //    const val defaultProject="None"                //Oxidizer
 //    const val defaultAlias="None"                  //OXR
@@ -32,6 +33,11 @@ object Endpoints {
 //        const val OxgnHost = "https://oxgn.page.link"
 //
 //    }
+    object broadcategories{
+        const val coshop = "Coshop"
+        const val quantum_exchange = "Quantum Exchange"
+        const val shared_cab = "Shared Cab"
+    }
 
     object categories{
         const val Pharmaceuticals = "Pharmaceuticals"
@@ -109,27 +115,34 @@ object Endpoints {
     }
 
 
-    object Project {
+    object postCreate{
+            const val POST_ID = "_id"
+            const val POST_CATEGORY = "category"
+            const val POST_APPS = "postApps"
+            const val POST_DESCRIPTION = "comment"
+            const val POST_LOGO = "postLogo"
+            const val TOTAL_AMOUNT = "total_required_amount"
+            const val CREATORS_CONTRIBUTION = "sender_contribution"
+            const val EXPIRATION_DATE = "expiration_date"
+        object filter{
+            const val MYYEAR = "my_year"
+            const val ADDRESS = "filter_address"
+            const val BRANCH = "branch"
+        }
 
-        const val MESSAGES="MESSAGES"
-//        const val SEGMENT = "SEGMENTS"
-//        const val CONTRIBUTERS = "CONTRIBUTERS"
-//        const val PROJECTID = "PROJECT_ID"
-//        const val TASKID = "TASKID"
-//        const val GENERAL="GENERAL"
-//        const val PROJECTNAME = "PROJECT_NAME"
-//        const val TAGS = "TAGS"
-//        const val CHECKLIST="CHECKLIST"
-//        const val LAST_UPDATED="last_updated"
-//        const val LAST_TAG_UPDATED="last_tag_updated"
-//        const val LAST_MESSAGE_AT="last_message_at"
-//        const val CHANNELS="CHANNELS"
-//        const val CHANNEL_CHATS="CHATS"
-//        const val LIST ="LIST"
-//        const val BOARDS="BOARDS"
+        //sender
+        object Sender{
+            const val ID = "sender_id"
+            const val NAME = "full_name"
+            const val ADMISSION_NUMBER = "admission_number"
+            const val ADDRESS = "address"
+            const val RATING = "rating"
+            const val RATED_COUNT="rated_count"
+            const val PHOTO ="secure_url"
+
+        }
 
     }
-
 
 
     object Notifications {

@@ -12,20 +12,20 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 interface SwapApi {
-    @POST("/create-swap")
+    @POST("swap/create-swap")
     suspend fun createSwap(@Body createSwap: createSwapRequest): Response<commonResponse>
 
 
-    @POST("/get-swaps")
+    @POST("swap/get-swaps")
     suspend fun getSwaps(@Body getSwapsRequest: getSwapsRequest): Response<getSwapResposne>
 
-    @GET("/get-my-swaps")
+    @GET("swap/get-my-swaps")
     suspend fun getMySwaps(): Response<getSwapResposne>
 
-    @PATCH("/update-swap")
+    @PATCH("swap/update-swap")
     suspend fun updateSwap(@Body updateSwapRequest: updateSwapRequest): Response<commonResponse>
 
-    @DELETE("/delete-swap")
+    @DELETE("swap/delete-swap")
     suspend fun deleteSwap(@Body swap_id: Map<String,String>): Response<commonResponse>
     // mapOf("swap_id" to swap_id)
 }

@@ -20,7 +20,7 @@
         <TextView
             android:id="@+id/NewProject"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/lexendextrabold"
             android:gravity="center"
@@ -34,38 +34,47 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lexendregular"
+            android:text="Connecting Students"
+            android:layout_marginTop="-4dp"
+            app:layout_constraintStart_toStartOf="@+id/NewProject"
+            app:layout_constraintTop_toBottomOf="@id/NewProject" />
 
         <ImageView
             android:id="@+id/notificationButton"
             android:layout_width="30dp"
             android:layout_height="match_parent"
+            android:padding="3dp"
             android:src="@drawable/baseline_notifications_24"
-            android:visibility="visible"
             android:layout_marginHorizontal="15dp"
-            app:layout_constraintEnd_toStartOf="@+id/userProfile"
-            app:tint="#7E7E7E" />
+            app:layout_constraintEnd_toStartOf="@+id/profileCard"
+             />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userProfile"
-            android:layout_width="36dp"
-            android:layout_height="match_parent"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/profileCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="30dp"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/profile_pic_placeholder"
+            android:backgroundTint="@color/secondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_margin="1dp"
+            android:id="@+id/userProfile"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/profile_pic_placeholder"
+            />
+        </androidx.cardview.widget.CardView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/dimmer_primary"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

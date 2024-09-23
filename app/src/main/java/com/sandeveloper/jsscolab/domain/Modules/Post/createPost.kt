@@ -1,9 +1,9 @@
 package com.sandeveloper.jsscolab.domain.Modules.Post
 
 data class createPost(
-    val app: String,
+    val app: List<String>,
     val category: String,
-    val comment: String,
+    val comment: String?,
     val sender_contribution: Number,
     val filter: Filter,
     val total_required_amount: Number,

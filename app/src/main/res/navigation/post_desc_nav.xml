@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/post_desc_nav.xml"
+    app:startDestination="@id/postDescription2">
+
+    <fragment
+        android:id="@+id/postDescription2"
+        android:name="com.sandeveloper.jsscolab.presentation.Main.PostDescription"
+        android:label="PostDescription" />
+</navigation>

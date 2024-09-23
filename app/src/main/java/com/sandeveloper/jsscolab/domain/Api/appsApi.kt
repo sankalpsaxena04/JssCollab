@@ -8,10 +8,10 @@ import retrofit2.http.Query
 
 interface appsApi {
 
-    @GET("/get-names")
+    @GET("apps/get-names")
     suspend fun getNames():Response<getAppResponse>
 
-    @GET("get-all-apps")
+    @GET("apps/get-all-apps")
     suspend fun getAllApps(
         @Query("limit") limit: Int?,
         @Query("category") category: String?

@@ -1,37 +1,25 @@
 package com.sandeveloper.jsscolab.presentation.Main.chat
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.sandeveloper.jsscolab.databinding.FragmentChatBinding
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.sandeveloper.jsscolab.databinding.ActivityChatBinding
+import com.sandeveloper.jsscolab.domain.Modules.Messages.Message
+import com.sandeveloper.jsscolab.domain.Modules.Messages.MessageEntity
+import dagger.hilt.android.AndroidEntryPoint
 
-class Chat : Fragment() {
-    private var _binding: FragmentChatBinding? = null
-    private val binding get() = _binding!!
+@AndroidEntryPoint
+class Chat : AppCompatActivity() {
+
+    private val binding: ActivityChatBinding by lazy {
+        ActivityChatBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        FragmentChatBinding.inflate(inflater,container,false)
-
-        return binding.root
+        setContentView(binding.root)
 
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-
-    }
-
 
 }

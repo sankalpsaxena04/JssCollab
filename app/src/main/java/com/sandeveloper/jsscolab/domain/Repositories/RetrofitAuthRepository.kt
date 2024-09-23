@@ -1,6 +1,7 @@
 package com.sandeveloper.jsscolab.domain.Repositories
 
 import android.media.tv.CommandResponse
+import androidx.compose.runtime.mutableStateListOf
 import com.google.gson.JsonObject
 import com.sandeveloper.jsscolab.domain.Api.AuthApi
 import com.sandeveloper.jsscolab.domain.Api.ProfileApi
@@ -49,6 +50,7 @@ class RetrofitAuthRepository @Inject constructor(
             serverResult = serverResult,
             onSuccess = {
                 if (it.success) {
+                    PrefManager.setPhoneNumber(otpRequest.phone.toString())
                     PrefManager.setOtpOrderId(it.orderId.toString())
                 }
             }
@@ -101,7 +103,7 @@ class RetrofitAuthRepository @Inject constructor(
             serverResult = serverResult,
             onSuccess = {
                 if (it.success) {
-                    PrefManager.setAuthToken(it.token.toString())
+                    PrefManager.saveToken(it.token!!)
                 }
             }
         )
@@ -116,7 +118,7 @@ class RetrofitAuthRepository @Inject constructor(
             serverResult = serverResult,
             onSuccess = {
                 if (it.success) {
-                    PrefManager.setAuthToken(it.token.toString())
+                    PrefManager.saveToken(it.token!!)
                 }
             }
         )
@@ -131,7 +133,7 @@ class RetrofitAuthRepository @Inject constructor(
             serverResult = serverResult,
             onSuccess = {
                 if (it.success) {
-                    PrefManager.setAuthToken(it.token.toString())
+                    PrefManager.saveToken(it.token!!)
                 }
             }
         )
@@ -172,7 +174,12 @@ class RetrofitAuthRepository @Inject constructor(
     ) {
         handleApiResponse(
             apiCall = { profileApi.getMyDetails() },
-            serverResult = serverResult
+            serverResult = serverResult,
+            onSuccess = {
+                if (it.success) {
+                    PrefManager.setcurrentUserdetails(it.details!!)
+                }
+            }
         )
     }
 
@@ -232,4 +239,6 @@ class RetrofitAuthRepository @Inject constructor(
             serverResult = serverResult
         )
     }
+
+
 }

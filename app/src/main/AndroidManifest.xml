@@ -9,18 +9,19 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
-        android:name="android.hardware.sensor.accelerometer"
-        android:required="true" />
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -36,25 +37,21 @@
         android:theme="@style/Theme.JssColab"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.Main.home.BroadCategoryPosts"
+            android:exported="false" />
+        <activity
             android:name=".presentation.Main.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.Main.chat.Message"
+            android:name=".presentation.Main.chat.Chat"
             android:exported="false" />
         <activity
             android:name=".presentation.Notification"
             android:exported="false" />
+        <activity android:name=".presentation.Main.PostDescriptionActivity"
+            android:exported="false"/>
         <activity
             android:name=".presentation.StartScreen"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.Main.Profile"
-            android:exported="false" />
-        <activity
-            android:name="com.sandeveloper.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.Auth.Auth"
             android:exported="true"
             android:theme="@style/Theme.JssColab.NoActionBar">
             <intent-filter>
@@ -63,6 +60,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.Main.Profile"
+            android:exported="false" />
+        <activity
+            android:name="com.sandeveloper.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.Auth.Auth"
+            android:exported="false" />
 
         <service
             android:name=".Service.NotificationService"
@@ -71,6 +77,26 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

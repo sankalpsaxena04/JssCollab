@@ -1,5 +1,13 @@
 package com.sandeveloper.jsscolab.presentation.Main
 
+import android.Manifest
+import android.app.Application
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,14 +23,21 @@ import com.sandeveloper.jsscolab.domain.Modules.Profile.ProfileUpdateRequest
 import com.sandeveloper.jsscolab.domain.Modules.Profile.RateUserRequest
 import com.sandeveloper.jsscolab.domain.Modules.Profile.ReportUserRequest
 import com.sandeveloper.jsscolab.domain.Modules.commonResponse
+import com.sandeveloper.jsscolab.domain.Repositories.RetrofitAuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val profileApi: ProfileApi
-) : ViewModel() {
+    private val authRepository: RetrofitAuthRepository
+):ViewModel() {
+
+    private val _createProfileResponse = MutableLiveData<ServerResult<commonResponse>>()
+    val createProfileResponse: LiveData<ServerResult<commonResponse>> = _createProfileResponse
+
+    private val _updateProfilePictureResponse =  MutableLiveData<ServerResult<commonResponse>>()
+    val updateProfilePictureResponse: LiveData<ServerResult<commonResponse>> = _updateProfilePictureResponse
 
     private val _profileResponse = MutableLiveData<ServerResult<MyProfileResponse>>()
     val profileResponse: LiveData<ServerResult<MyProfileResponse>> = _profileResponse
@@ -36,173 +51,104 @@ class ProfileViewModel @Inject constructor(
     private val _banStatusResponse = MutableLiveData<ServerResult<BanStatusResponse>>()
     val banStatusResponse: LiveData<ServerResult<BanStatusResponse>> = _banStatusResponse
 
-    /**
-     * Create profile API call
-     */
-    fun createProfile(createProfile: CreateProfile) = viewModelScope.launch {
-        _commonResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.createProfile(createProfile)
-            if (response.isSuccessful) {
-                _commonResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _commonResponse.value = ServerResult.Failure(Exception("Failed to create profile"))
+    private val _deleteAccountResponse = MutableLiveData<ServerResult<commonResponse>>()
+    val deleteAccountResponse: LiveData<ServerResult<commonResponse>> = _deleteAccountResponse
+
+    private val _blockUserResponse = MutableLiveData<ServerResult<commonResponse>>()
+    val blockUserResponse: LiveData<ServerResult<commonResponse>> = _blockUserResponse
+
+    private val _reportUserResponse = MutableLiveData<ServerResult<commonResponse>>()
+    val reportUserResponse: LiveData<ServerResult<commonResponse>> = _reportUserResponse
+
+
+
+    // Create Profile
+    fun createProfile(createProfile: CreateProfile) {
+        viewModelScope.launch {
+            authRepository.createProfile(createProfile) { result ->
+                _createProfileResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _commonResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Update profile API call
-     */
-    fun updateProfile(profileUpdateRequest: ProfileUpdateRequest) = viewModelScope.launch {
-        _commonResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.updateProfile(profileUpdateRequest)
-            if (response.isSuccessful) {
-                _commonResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _commonResponse.value = ServerResult.Failure(Exception("Failed to update profile"))
+    // Update Profile
+    fun updateProfile(profileUpdateRequest: ProfileUpdateRequest) {
+        viewModelScope.launch {
+            authRepository.updateProfile(profileUpdateRequest) { result ->
+                _commonResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _commonResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Update profile picture API call
-     */
-    fun updatePicture(pictureUpdateRequest: PictureUpdateRequest) = viewModelScope.launch {
-        _commonResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.updatePicture(pictureUpdateRequest)
-            if (response.isSuccessful) {
-                _commonResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _commonResponse.value = ServerResult.Failure(Exception("Failed to update picture"))
+    // Update Picture
+    fun updatePicture(pictureUpdateRequest: PictureUpdateRequest) {
+        viewModelScope.launch {
+            authRepository.updatePicture(pictureUpdateRequest) { result ->
+                _updateProfilePictureResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _commonResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Get my details API call
-     */
-    fun getMyDetails() = viewModelScope.launch {
-        _profileResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.getMyDetails()
-            if (response.isSuccessful) {
-                _profileResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _profileResponse.value = ServerResult.Failure(Exception("Failed to fetch profile details"))
+    // Get My Details
+    fun getMyDetails() {
+        viewModelScope.launch {
+            authRepository.getMyDetails { result ->
+                _profileResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _profileResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Get my rating API call
-     */
-    fun getMyRating() = viewModelScope.launch {
-        _ratingResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.getMyRating()
-            if (response.isSuccessful) {
-                _ratingResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _ratingResponse.value = ServerResult.Failure(Exception("Failed to fetch rating"))
+    // Get My Rating
+    fun getMyRating() {
+        viewModelScope.launch {
+            authRepository.getMyRating { result ->
+                _ratingResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _ratingResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Rate a user API call
-     */
-    fun rateUser(rateUserRequest: RateUserRequest) = viewModelScope.launch {
-        _commonResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.rateUser(rateUserRequest)
-            if (response.isSuccessful) {
-                _commonResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _commonResponse.value = ServerResult.Failure(Exception("Failed to rate user"))
+    // Rate User
+    fun rateUser(rateUserRequest: RateUserRequest) {
+        viewModelScope.launch {
+            authRepository.rateUser(rateUserRequest) { result ->
+                _commonResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _commonResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Report a user API call
-     */
-    fun reportUser(reportUserRequest: ReportUserRequest) = viewModelScope.launch {
-        _commonResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.reportUser(reportUserRequest)
-            if (response.isSuccessful) {
-                _commonResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _commonResponse.value = ServerResult.Failure(Exception("Failed to report user"))
+    // Report User
+    fun reportUser(reportUserRequest: ReportUserRequest) {
+        viewModelScope.launch {
+            authRepository.reportUser(reportUserRequest) { result ->
+                _reportUserResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _commonResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Block a user API call
-     */
-    fun blockUser(userId: String) = viewModelScope.launch {
-        _commonResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.blockUser(mapOf("user_id" to userId))
-            if (response.isSuccessful) {
-                _commonResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _commonResponse.value = ServerResult.Failure(Exception("Failed to block user"))
+    // Block User
+    fun blockUser(blockUserRequest: Map<String, String>) {
+        viewModelScope.launch {
+            authRepository.blockUser(blockUserRequest) { result ->
+                _blockUserResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _commonResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Delete account API call
-     */
-    fun deleteAccount() = viewModelScope.launch {
-        _commonResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.deleteAccount()
-            if (response.isSuccessful) {
-                _commonResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _commonResponse.value = ServerResult.Failure(Exception("Failed to delete account"))
+    // Delete Account
+    fun deleteAccount() {
+        viewModelScope.launch {
+            authRepository.deleteAccount { result ->
+                _deleteAccountResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _commonResponse.value = ServerResult.Failure(e)
         }
     }
 
-    /**
-     * Check if user is banned API call
-     */
-    fun isBanned() = viewModelScope.launch {
-        _banStatusResponse.value = ServerResult.Progress
-        try {
-            val response = profileApi.isBanned()
-            if (response.isSuccessful) {
-                _banStatusResponse.value = ServerResult.Success(response.body()!!)
-            } else {
-                _banStatusResponse.value = ServerResult.Failure(Exception("Failed to check ban status"))
+    // Check if user is banned
+    fun isBanned() {
+        viewModelScope.launch {
+            authRepository.isBanned { result ->
+                _banStatusResponse.postValue(result)
             }
-        } catch (e: Exception) {
-            _banStatusResponse.value = ServerResult.Failure(e)
         }
     }
 }
