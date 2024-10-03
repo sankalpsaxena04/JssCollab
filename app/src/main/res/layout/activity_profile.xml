@@ -9,6 +9,3 @@
     app:defaultNavHost="true"
     app:navGraph="@navigation/profile_nav"
     />
-
-
-

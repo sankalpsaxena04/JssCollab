@@ -40,7 +40,7 @@
             android:textColor="@color/secondary_bg"
             android:layout_below="@id/verify_phone_no."
             android:layout_marginTop="16dp"
-            android:text="Enter your phone no. and password to stars using the application." />
+            android:text="Enter your phone no./email and password to stars using the application." />
         <TextView
             android:id="@+id/enter_phone_no_textview"
             android:layout_width="match_parent"
@@ -49,21 +49,19 @@
             android:layout_marginTop="35dp"
             android:text="@string/enter_mobile_no"/>
         <EditText
-            android:drawableStart="@drawable/baseline_phone_24"
             android:id="@+id/et_phone"
             style="@style/EditTextStyle"
             android:drawablePadding="12dp"
             android:layout_below="@id/enter_phone_no_textview"
             android:layout_marginTop="10dp"
             android:textColor="@color/primary"
-            android:hint="@string/_92xxxxxxxx"
+            android:hint="  phone / email"
             android:inputType="textEmailAddress" />
         <EditText
             android:id="@+id/password"
             android:drawableStart="@drawable/baseline_password_24"
             android:drawablePadding="12dp"
             style="@style/EditTextStyle"
-            android:maxLength="10"
             android:layout_below="@id/et_phone"
             android:layout_marginTop="10dp"
             android:textColor="@color/primary"

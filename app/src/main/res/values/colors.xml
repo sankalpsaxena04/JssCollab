@@ -50,7 +50,7 @@
     <color name="chat_progress_bg">#8A1E71FF</color>
 
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#383838</color>
     <color name="colorAccent">#FFC107</color>
     <color name="primary_txt">@color/better_white</color>
     <color name="orange">#ff563f</color>

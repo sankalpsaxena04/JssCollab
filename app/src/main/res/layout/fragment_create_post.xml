@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.Main.CreatePost">
+    tools:context=".presentation.createpost.CreatePost">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -161,47 +161,80 @@
                 android:background="@drawable/gray_border_box"
                 />
 
+            <LinearLayout
+                android:id="@+id/receiveSearchBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/date"
+                    android:padding="16dp">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/select_items_to_receive_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:fontFamily="@font/lexendregular"
-                android:text="Select items to receive-"
-                app:layout_constraintStart_toStartOf="@+id/date"
-                app:layout_constraintTop_toBottomOf="@id/date" />
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/receive_chip_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
-                app:chipSpacing="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/select_items_to_receive_text"
-                app:singleLine="false" />
-            <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/select_items_to_give_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:fontFamily="@font/lexendregular"
-            android:text="Select items to give-"
-            app:layout_constraintStart_toStartOf="@+id/receive_chip_group"
-            app:layout_constraintTop_toBottomOf="@id/receive_chip_group" />
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/give_chip_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
-                app:chipSpacing="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/select_items_to_give_text"
-                app:singleLine="false" />
+                    <EditText
+                        android:padding="8dp"
+                        android:background="@drawable/gray_border_box"
+                        android:id="@+id/searchBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Search Items to give"
+                        android:inputType="text" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewSearchResults"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:paddingTop="-1dp"
+                        android:background="@drawable/gray_border_box"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Selected Item(s):"
+                        android:padding="8dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewSelectedItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/giveSearchBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/receiveSearchBox"
+                    android:padding="16dp">
+
+                    <EditText
+                        android:padding="8dp"
+                        android:background="@drawable/gray_border_box"
+                        android:id="@+id/givesearchBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Search Items to receive"
+                        android:inputType="text" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewGiveSearchResults"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:paddingTop="-1dp"
+                        android:background="@drawable/gray_border_box"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Selected Item(s):"
+                        android:padding="8dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerGiveViewSelectedItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat

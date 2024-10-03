@@ -59,5 +59,8 @@ interface ProfileApi {
     @GET("profile/is-banned")
     suspend fun isBanned(): Response<BanStatusResponse>
 
+    @PATCH("profile/set-fcm")
+    suspend fun  setFCM(@Body fcmRequest:Map<String,String>):Response<commonResponse>
+
 
 }

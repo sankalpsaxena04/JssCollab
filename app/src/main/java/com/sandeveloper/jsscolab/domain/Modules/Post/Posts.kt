@@ -2,7 +2,7 @@ package com.sandeveloper.jsscolab.domain.Modules.Post
 
 data class Posts(
     val _id: String,
-    val sender: Sender,
+    val sender: Sender?,
     val apps: List<String>?,
     val category: String,
     val comment: String?,

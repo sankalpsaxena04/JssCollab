@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.sandeveloper.jsscolab.presentation.Main.chat.ChatInbox
 import com.sandeveloper.jsscolab.presentation.Main.home.HomeFragment
 import com.sandeveloper.jsscolab.presentation.Main.home.More
+import com.sandeveloper.jsscolab.presentation.createpost.CreatePost
 
 class FragmentPageAdapter(
     fragmentManager: FragmentManager,

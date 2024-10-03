@@ -174,8 +174,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingHorizontal="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/give_chip_group">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:layout_width="wrap_content"

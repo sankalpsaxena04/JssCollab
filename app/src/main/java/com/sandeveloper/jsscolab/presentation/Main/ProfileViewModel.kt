@@ -59,7 +59,8 @@ class ProfileViewModel @Inject constructor(
 
     private val _reportUserResponse = MutableLiveData<ServerResult<commonResponse>>()
     val reportUserResponse: LiveData<ServerResult<commonResponse>> = _reportUserResponse
-
+    private val _setFCMresponse = MutableLiveData<ServerResult<commonResponse>>()
+    val setFCMResponse :LiveData<ServerResult<commonResponse>> = _setFCMresponse
 
 
     // Create Profile
@@ -148,6 +149,14 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             authRepository.isBanned { result ->
                 _banStatusResponse.postValue(result)
+            }
+        }
+    }
+
+    fun setFCM(fcmToken:Map<String,String>){
+        viewModelScope.launch {
+            authRepository.setFcm(fcmToken){
+                _setFCMresponse.postValue(it)
             }
         }
     }

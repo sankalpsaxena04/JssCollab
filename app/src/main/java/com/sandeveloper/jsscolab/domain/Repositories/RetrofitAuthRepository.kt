@@ -240,5 +240,15 @@ class RetrofitAuthRepository @Inject constructor(
         )
     }
 
+    override suspend fun setFcm(
+        setFCMrequest: Map<String,String>,
+        serverResult: (ServerResult<commonResponse>) -> Unit
+    ) {
+        handleApiResponse(
+            apiCall = {profileApi.setFCM(setFCMrequest)},
+            serverResult = serverResult
+        )
+    }
+
 
 }

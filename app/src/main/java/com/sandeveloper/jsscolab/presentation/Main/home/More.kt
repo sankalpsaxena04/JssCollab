@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.sandeveloper.jsscolab.R
 import com.sandeveloper.jsscolab.databinding.FragmentMoreBinding
+import com.sandeveloper.jsscolab.domain.Constants.Endpoints
 import com.sandeveloper.jsscolab.domain.HelperClasses.PrefManager
 import com.sandeveloper.jsscolab.domain.Models.ServerResult
 import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
@@ -52,6 +53,12 @@ class More : Fragment() {
             val intent = Intent(requireContext(), Profile::class.java)
             startActivity(intent)
         }
+        binding.yourPosts.setOnClickThrottleBounceListener {
+            PrefManager.setBroadCategory(Endpoints.broadcategories.my_posts)
+            val intent = Intent(requireContext(),BroadCategoryPosts::class.java)
+            startActivity(intent)
+        }
+
 
         binding.logout.setOnClickThrottleBounceListener {
             showCustomDialogueBox("Do you want to logout.")

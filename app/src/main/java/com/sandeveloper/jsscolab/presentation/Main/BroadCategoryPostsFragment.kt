@@ -1,12 +1,16 @@
 package com.sandeveloper.jsscolab.presentation.Main
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sandeveloper.jsscolab.R
@@ -14,7 +18,12 @@ import com.sandeveloper.jsscolab.databinding.FragmentCategoryListBinding
 import com.sandeveloper.jsscolab.domain.Constants.Endpoints
 import com.sandeveloper.jsscolab.domain.HelperClasses.PrefManager
 import com.sandeveloper.jsscolab.domain.HelperClasses.PrefManager.setOnClickedPost
+import com.sandeveloper.jsscolab.domain.HelperClasses.toOriginalCategories
+import com.sandeveloper.jsscolab.domain.HelperClasses.toPost
+import com.sandeveloper.jsscolab.domain.Models.ServerResult
+import com.sandeveloper.jsscolab.domain.Modules.Post.getPostsRequest
 import com.sandeveloper.jsscolab.domain.Modules.PostForView
+import com.sandeveloper.jsscolab.domain.Modules.swap.getSwapsRequest
 import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.sandeveloper.jsscolab.presentation.Main.home.HomeViewModel
 import com.sandeveloper.jsscolab.presentation.Main.home.HomeAdapters.PostAdapter
@@ -58,14 +67,41 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
                 binding.createPost.visibility = View.GONE
             }
         }
-        postAdapter = PostAdapter { post ->
-            // Save the clicked post using setOnClickedPost
-            setOnClickedPost(post)
+        postAdapter = PostAdapter(
+            onPostClicked = { post ->
+                // Save the clicked post using setOnClickedPost
+                setOnClickedPost(post)
+                // Open the new activity
+                val intent = Intent(requireContext(), PostDescriptionActivity::class.java)
+                startActivity(intent)
+            },
+            onPostLongClicked = { post ->
+                if (PrefManager.getBroadCategory() == Endpoints.broadcategories.my_posts) {
+                    // Show delete confirmation dialog
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Delete Post")
+                        .setMessage("Are you sure you want to delete this post?")
+                        .setPositiveButton("Yes") { _, _ ->
+                            homeViewModel.deleteCoshopPost(post._id)
+                        }
+                        .setNegativeButton("No", null)
+                        .show()
+                } else {
+                    // Show report user dialog
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Report User")
+                        .setMessage("Do you want to report this user?")
+                        .setPositiveButton("Yes") { _, _ ->
+                            //TODO()
+                            findNavController().navigate(R.id.action_categoryListFragment_to_reportUser2)
+                        }
+                        .setNegativeButton("No", null)
+                        .show()
+                }
+            }
+        )
+        binding.postsRecyclerView.adapter = postAdapter
 
-            // Open the new activity
-            val intent = Intent(requireContext(), PostDescriptionActivity::class.java)
-            startActivity(intent)
-        }
 
         when(PrefManager.getBroadCategory()){
             Endpoints.broadcategories.coshop->{
@@ -77,9 +113,11 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
             Endpoints.broadcategories.shared_cab->{
                 binding.categoryTitle.text= Endpoints.broadcategories.shared_cab
             }
+            Endpoints.broadcategories.my_posts->{
+                binding.categoryTitle.text = Endpoints.broadcategories.my_posts
+            }
         }
-        homeViewModel.getMySwaps()
-        //homeViewModel.getCoshopPosts(getPostsRequest(null, null, listOf(Endpoints.categories.QuickCommerce,Endpoints.categories.FoodDelivery), null, null, null,null))
+
 
         binding.postsRecyclerView.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         binding.postsRecyclerView.adapter=postAdapter
@@ -87,25 +125,128 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
         return binding.root
 
     }
+    fun setUpViewModel(){
+        if(PrefManager.getBroadCategory()==Endpoints.broadcategories.coshop){
 
-    private fun onClickedPost(postForView: PostForView) {
-
+            homeViewModel.getCoshopPosts(
+                getPostsRequest(
+                    null,
+                    null,
+                    listOf(
+                        Endpoints.categories.QuickCommerce.toOriginalCategories(),
+                        Endpoints.categories.FoodDelivery.toOriginalCategories(),
+                        Endpoints.categories.ECommerce.toOriginalCategories(),
+                        Endpoints.categories.Pharmaceuticals.toOriginalCategories()
+                    ),
+                    null,
+                    null,
+                    null
+                )
+            )
+        }
+        else if(PrefManager.getBroadCategory()==Endpoints.broadcategories.quantum_exchange){
+            homeViewModel.getSwaps(getSwapsRequest(null,null,null,null,null))
+        }
+        else if(PrefManager.getBroadCategory()==Endpoints.broadcategories.my_posts){
+            homeViewModel.getMyCoshopPosts()
+        }
+        else{
+            homeViewModel.getCoshopPosts(
+                getPostsRequest(
+                    null,
+                    null,
+                    listOf(
+                        Endpoints.categories.SharedCab.toOriginalCategories()
+                    ),
+                    null,
+                    null,
+                    null
+                )
+            )
+        }
     }
+    fun bindObserver(){
+    homeViewModel.coshopPostResponse.observe(viewLifecycleOwner, Observer {
+        when(it){
+            is ServerResult.Failure -> {
+                Toast.makeText(requireContext(),it.exception.message,Toast.LENGTH_SHORT).show()
+            }
+            is ServerResult.Progress -> {
+                binding.progressbar.visibility = View.VISIBLE
+                binding.postsRecyclerView.visibility = View.GONE
+                binding.searchbox.visibility = View.GONE
+                binding.searchButton.visibility = View.GONE
+                binding.createPost.visibility = View.GONE
+            }
+            is ServerResult.Success -> {
+                if(it.data.success){
+                    postAdapter.submitList(it.data.posts)
+                    binding.progressbar.visibility = View.GONE
+                    binding.postsRecyclerView.visibility = View.VISIBLE
+                    binding.searchbox.visibility = View.VISIBLE
+                    binding.searchButton.visibility = View.VISIBLE
+                    binding.createPost.visibility = View.VISIBLE
+                }
+                else{
+                    Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    })
+    homeViewModel.swapPostResponse.observe(viewLifecycleOwner, Observer {
+        when(it){
+            is ServerResult.Failure -> {
+                Log.e("swapError",it.exception.message!!)
+                Toast.makeText(requireContext(),it.exception.message,Toast.LENGTH_SHORT).show()
+            }
+            is ServerResult.Progress -> {
+                binding.progressbar.visibility = View.VISIBLE
+                binding.postsRecyclerView.visibility = View.GONE
+                binding.searchbox.visibility = View.GONE
+                binding.searchButton.visibility = View.GONE
+                binding.createPost.visibility = View.GONE
+            }
+            is ServerResult.Success -> {
+                if(it.data.success){
+                    Log.e("swapSuccess",it.data.swaps.toString())
+                    postAdapter.submitList(it.data.swaps?.map {
+                        it.toPost()
+                    })
+                    binding.progressbar.visibility = View.GONE
+                    binding.postsRecyclerView.visibility = View.VISIBLE
+                    binding.searchbox.visibility = View.VISIBLE
+                    binding.searchButton.visibility = View.VISIBLE
+                    binding.createPost.visibility = View.VISIBLE
+                }
+                else{
+                    Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    })
 
-    private fun generatePosts() = listOf(
-        PostForView("Great contribution to the project!", 60000, 50000, "Alice Johnson", "https://example.com/photos/alice.jpg", 4.5, "ProjectX","2024-10-03T21:52:57.000Z"),
-        PostForView("Excellent work on the implementation.", 37500, 75000, "Bob Smith", "https://example.com/photos/bob.jpg", 4.8, "ProjectY","2024-10-03T21:52:57.000Z"),
-        PostForView("Very helpful in the testing phase.", 3000, 30000, "Carol Davis", "https://example.com/photos/carol.jpg", 4.2, "ProjectZ","2024-10-03T21:52:57.000Z"),
-        PostForView("Great support during the launch.", 55000, 60000, "David Wilson", "https://example.com/photos/david.jpg", 4.6, "ProjectA","2024-10-03T21:52:57.000Z"),
-        PostForView("Amazing job with the UI/UX.", 2500, 45000, "Eva Martinez", "https://example.com/photos/eva.jpg", 4.7, "ProjectB","2024-10-03T21:52:57.000Z"),
-        PostForView("Helped with database management.", 120, 200, "Frank Lee", "https://example.com/photos/frank.jpg", 4.3, "ProjectC","2024-10-03T21:52:57.000Z"),
-        PostForView("Great work on the API integration.", 5500, 55000, "Grace Kim", "https://example.com/photos/grace.jpg", 4.4, "ProjectD","2024-10-03T21:52:57.000Z"),
-        PostForView("Fantastic effort on user support.", 25000, 35000, "Hannah White", "https://example.com/photos/hannah.jpg", 4.9, "ProjectE","2024-10-03T21:52:57.000Z"),
-        PostForView("Excellent job with the analytics.", 5000, 50000, "Ian Brown", "https://example.com/photos/ian.jpg", 4.6, "ProjectF","2024-10-03T21:52:57.000Z"),
-        PostForView("Great collaboration on the project.", 7000, 70000, "Judy Green", "https://example.com/photos/judy.jpg", 4.8, "ProjectG","2024-10-03T21:52:57.000Z"),
-        PostForView("Helped with the deployment process.", 4000, 40000, "Kevin Anderson", "https://example.com/photos/kevin.jpg", 4.5, "ProjectH","2024-10-03T21:52:57.000Z")
-    )
+        homeViewModel.commonResponse.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                is ServerResult.Failure -> {
+                    Toast.makeText(requireContext(), "Failed to delete post", Toast.LENGTH_SHORT).show()
+                }
+                is ServerResult.Progress -> {
+                    binding.progressbar.visibility = View.VISIBLE
+                }
+                is ServerResult.Success -> {
+                    Toast.makeText(requireContext(), "Post deleted successfully", Toast.LENGTH_SHORT).show()
+                    // Refresh the posts list after deletion
+                    setUpViewModel()
+                }
+            }
+        })
+}
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpViewModel()
+        bindObserver()
+    }
 
     override fun onDestroy() {
         super.onDestroy()

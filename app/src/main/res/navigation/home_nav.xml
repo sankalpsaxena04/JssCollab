@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_homeFragment_to_more"
             app:destination="@id/more" />
+        <action
+            android:id="@+id/action_homeFragment_to_reportUser"
+            app:destination="@id/reportUser" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/postDescription"
@@ -24,5 +30,18 @@
     <fragment
         android:id="@+id/more"
         android:name="com.sandeveloper.jsscolab.presentation.Main.home.More"
-        android:label="More" />
+        android:label="More" >
+        <action
+            android:id="@+id/action_more_to_reportUser"
+            app:destination="@id/reportUser" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportUser"
+        android:name="com.sandeveloper.jsscolab.presentation.Main.ReportUser"
+        android:label="fragment_report_user"
+        tools:layout="@layout/fragment_report_user" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.sandeveloper.jsscolab.presentation.Main.home.SearchFragment"
+        android:label="SearchFragment" />
 </navigation>

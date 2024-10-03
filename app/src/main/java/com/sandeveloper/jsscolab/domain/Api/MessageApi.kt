@@ -18,7 +18,7 @@ interface MessageApi {
 
     //mapOf("user_id" to user_id)
 
-    @GET("messages/get-room-id")
+    @POST("messages/get-room-id")
     suspend fun getRoomId(
         @Body createRoomRequest: Map<String,String>
     ): Response<RoomIdResponse>

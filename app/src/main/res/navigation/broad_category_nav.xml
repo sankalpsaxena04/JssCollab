@@ -12,10 +12,18 @@
         <action
             android:id="@+id/action_categoryListFragment_to_createPost2"
             app:destination="@id/createPost2" />
+        <action
+            android:id="@+id/action_categoryListFragment_to_reportUser2"
+            app:destination="@id/reportUser2" />
     </fragment>
     <fragment
         android:id="@+id/createPost2"
-        android:name="com.sandeveloper.jsscolab.presentation.Main.CreatePost"
+        android:name="com.sandeveloper.jsscolab.presentation.createpost.CreatePost"
         android:label="fragment_create_post"
         tools:layout="@layout/fragment_create_post" />
+    <fragment
+        android:id="@+id/reportUser2"
+        android:name="com.sandeveloper.jsscolab.presentation.Main.ReportUser"
+        android:label="fragment_report_user"
+        tools:layout="@layout/fragment_report_user" />
 </navigation>

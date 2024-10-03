@@ -27,23 +27,10 @@ import javax.inject.Singleton
 
 class ChatRepository @Inject constructor(
     private val messageApi: MessageApi,
-    private val messageDAO: MessageDAO, // Inject the DAO
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val messageDAO: MessageDAO
 ) : MessageRepository {
 
-    private lateinit var socket: Socket
 
-    override fun initializeSocket() {
-        socket = IO.socket("https://your-socket-url.com")
-    }
-
-    override fun connectSocket() {
-        socket.connect()
-    }
-
-    override fun disconnectSocket() {
-        socket.disconnect()
-    }
     private suspend fun <T> handleApiResponse(
         apiCall: suspend () -> Response<T>,
         serverResult: (ServerResult<T>) -> Unit,
@@ -115,32 +102,7 @@ class ChatRepository @Inject constructor(
         messageDAO.deleteMessagesForRoom(roomId) // Delete from local database
     }
 
-    // Socket IO methods
-    override fun listenForMessages(onMessageReceived: (ServerResult<Message>) -> Unit) {
-        socket.on("message") { args ->
-            try {
-                val message = Gson().fromJson(args[0].toString(), Message::class.java)
-                onMessageReceived(ServerResult.Success(message))
 
-                // Insert received message into database
-                CoroutineScope(ioDispatcher).launch {
-                    //TODO("refactor this")
-                    messageDAO.insertMessage(MessageEntity(roomId = "message.", senderId = message.sender, text = message.text, time = message.timeSent, isSender = false))
-                }
 
-            } catch (e: Exception) {
-                onMessageReceived(ServerResult.Failure(e))
-            }
-        }
-    }
 
-    override fun sendMessageSocket(message: MessageEntity) {
-        socket.emit("send_message", Gson().toJson(Message(message.senderId, message.text, message.time)))
-
-        // Store the message locally once sent
-        CoroutineScope(ioDispatcher).launch {
-
-            messageDAO.insertMessage(message)
-        }
-    }
 }

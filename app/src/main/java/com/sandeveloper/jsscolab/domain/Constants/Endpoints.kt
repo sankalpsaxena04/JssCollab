@@ -37,6 +37,7 @@ object Endpoints {
         const val coshop = "Coshop"
         const val quantum_exchange = "Quantum Exchange"
         const val shared_cab = "Shared Cab"
+        const val my_posts = "My Posts"
     }
 
     object categories{

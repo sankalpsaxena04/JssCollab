@@ -34,7 +34,6 @@ tools:context=".presentation.Notification">
         android:src="@drawable/baseline_search_24" />
 </LinearLayout>
 
-<!-- Tab Layout for 'All' and 'Unread' -->
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

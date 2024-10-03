@@ -58,5 +58,9 @@ interface ProfileRepository {
     suspend fun isBanned(
         serverResult: (ServerResult<BanStatusResponse>) -> Unit
     )
+    suspend fun setFcm(
+        setFCMrequest:Map<String,String>,
+        serverResult: (ServerResult<commonResponse>) -> Unit
+    )
 
 }

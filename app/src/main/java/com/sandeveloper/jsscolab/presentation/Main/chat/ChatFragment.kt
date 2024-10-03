@@ -1,27 +1,44 @@
 package com.sandeveloper.jsscolab.presentation.Main.chat
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sandeveloper.jsscolab.JssColabApplication
 import com.sandeveloper.jsscolab.R
 import com.sandeveloper.jsscolab.databinding.FragmentChatBinding
+import com.sandeveloper.jsscolab.domain.HelperClasses.PrefManager
+import com.sandeveloper.jsscolab.domain.Modules.Messages.Message
 import com.sandeveloper.jsscolab.domain.Modules.Messages.MessageEntity
+import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import dagger.hilt.android.AndroidEntryPoint
+import io.socket.client.IO
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import org.json.JSONObject
+import java.net.URISyntaxException
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {
+    private lateinit var mSocket: Socket
+    private val TAG = "SocketIO"
 
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
-    private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var chatAdapter: ChatAdapter
-    private lateinit var roomId: String
-    private lateinit var senderId: String
-    private lateinit var senderDpUrl: String
+
+    private lateinit var messageList: MutableList<MessageEntity>
+    private val roomId =PrefManager.getSelectedRoomId()!!
+    private val jwtToken = PrefManager.getToken()!!
+    private val viewModel: ChatViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,67 +46,36 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
-
-        // Get roomId, senderId, and senderDpUrl from arguments passed to this fragment
-        roomId = arguments?.getString("roomId") ?: ""
-        senderId = arguments?.getString("senderId") ?: ""
-        senderDpUrl = arguments?.getString("senderDpUrl") ?: ""
-
-        // Setup RecyclerView
-        setupRecyclerView()
-
-        // Listen for new messages
-        chatViewModel.listenForMessages()
-
-        // Fetch chat messages
-        chatViewModel.fetchMessages(roomId)
-
-        // Observe incoming messages
-        chatViewModel.messages.observe(viewLifecycleOwner) { messages ->
-            val msg: MutableList<MessageEntity> = mutableListOf()
-            messages.forEach { message ->
-                msg.add(MessageEntity(roomId = roomId, senderId = message.sender, text = message.text, time = message.timeSent, isSender = message.sender == senderId))
-            }
-            chatAdapter = ChatAdapter(msg)
-            binding.recyclerViewMessages.adapter = chatAdapter
-            binding.recyclerViewMessages.scrollToPosition(msg.size - 1) // Scroll to last message
-        }
-
-        chatViewModel.newMessage.observe(viewLifecycleOwner) { newMessage ->
-            chatAdapter.addMessage(MessageEntity(roomId = roomId, senderId = newMessage.sender, text = newMessage.text, time = newMessage.timeSent, isSender = newMessage.sender == senderId))
-            binding.recyclerViewMessages.scrollToPosition(chatAdapter.itemCount - 1)
-        }
-
-        // Send message logic
-        binding.sendButton.setOnClickListener {
-            val messageText = binding.editTextMessage.text.toString().trim()
-            if (messageText.isNotEmpty()) {
-                val message = MessageEntity(
-                    roomId = roomId,
-                    senderId = senderId,
-                    text = messageText,
-                    time = System.currentTimeMillis(),
-                    isSender = true
-                )
-                chatViewModel.sendMessageSocket(message)
-
-                // Clear input field
-                binding.editTextMessage.setText("")
-            }
-        }
-
+        viewModel.joinRoom(roomId,jwtToken)
         return binding.root
     }
 
-    private fun setupRecyclerView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        messageList = mutableListOf()
+        chatAdapter = ChatAdapter(messageList)
         binding.recyclerViewMessages.layoutManager = LinearLayoutManager(requireContext())
-        chatAdapter = ChatAdapter(emptyList()) // Initialize with an empty list
         binding.recyclerViewMessages.adapter = chatAdapter
+
+        binding.sendButton.setOnClickThrottleBounceListener{
+            val message = binding.editTextMessage.text.toString()
+            val time = System.currentTimeMillis()
+            viewModel.sendMessage(Message("me", message, time))
+            chatAdapter.addMessage(MessageEntity(roomId = roomId, senderId = "", text = message, time=time, isSender =  true))
+        }
+        viewModel.receivedMessage.observe(viewLifecycleOwner) { message ->
+            chatAdapter.addMessage(MessageEntity(roomId = roomId, senderId = message.sender, text = message.text, time=message.timeSent, isSender =  false))
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        chatViewModel.disconnectSocket() // Disconnect socket when fragment view is destroyed
+
     }
+
+
+
 }

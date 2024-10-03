@@ -23,7 +23,6 @@ fun getProps(propName: String): String? {
 
 android {
 
-
     namespace = "com.sandeveloper.jsscolab"
     compileSdk = 34
 

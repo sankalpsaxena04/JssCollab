@@ -15,6 +15,7 @@ import com.sandeveloper.jsscolab.domain.Modules.Post.Photo
 import com.sandeveloper.jsscolab.domain.Modules.Post.Posts
 import com.sandeveloper.jsscolab.domain.Modules.Post.Sender
 import com.sandeveloper.jsscolab.domain.Modules.Profile.details
+import com.sandeveloper.jsscolab.domain.Modules.swap.SwapItem
 import java.util.concurrent.ConcurrentHashMap
 
 object PrefManager {
@@ -35,6 +36,15 @@ object PrefManager {
     fun getToken(): String? {
         return sharedPreferences.getString(JWT_TOKEN, null)
 
+    }
+
+    fun setSelectedRoomId(roomId: String) {
+        editor.putString("selectedRoomId", roomId)
+        editor.apply()
+
+    }
+    fun getSelectedRoomId(): String? {
+        return sharedPreferences.getString("selectedRoomId", null)
     }
 
     fun getAppMode(): String? {
@@ -174,13 +184,13 @@ object PrefManager {
             editor.putStringSet(Endpoints.postCreate.filter.ADDRESS,post.filter.address.toSet())
             editor.putStringSet(Endpoints.postCreate.filter.BRANCH,post.filter.branch.toSet())
         }
-        editor.putString(Endpoints.postCreate.Sender.ID,post.sender._id)
-        editor.putString(Endpoints.postCreate.Sender.NAME,post.sender.full_name)
-        editor.putInt(Endpoints.postCreate.Sender.PHOTO,post.sender.rating)
-        editor.putString(Endpoints.postCreate.Sender.ADDRESS,post.sender.address)
-        editor.putInt(Endpoints.postCreate.Sender.RATED_COUNT,post.sender.rated_count)
-        editor.putString(Endpoints.postCreate.Sender.PHOTO,post.sender.photo?.secure_url?:"")
-        editor.putString(Endpoints.postCreate.Sender.ADMISSION_NUMBER,post.sender.admission_number)
+        editor.putString(Endpoints.postCreate.Sender.ID,post.sender?._id)
+        editor.putString(Endpoints.postCreate.Sender.NAME,post.sender?.full_name)
+        editor.putInt(Endpoints.postCreate.Sender.PHOTO,post.sender?.rating?:0)
+        editor.putString(Endpoints.postCreate.Sender.ADDRESS,post.sender?.address)
+        editor.putInt(Endpoints.postCreate.Sender.RATED_COUNT,post.sender?.rated_count?:0)
+        editor.putString(Endpoints.postCreate.Sender.PHOTO,post.sender?.photo?.secure_url?:"")
+        editor.putString(Endpoints.postCreate.Sender.ADMISSION_NUMBER,post.sender?.admission_number)
         editor.apply()
     }
     fun getOnClickedPost(): Posts {
@@ -232,6 +242,4 @@ object PrefManager {
             sender = sender
         )
     }
-
-
 }

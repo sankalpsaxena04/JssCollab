@@ -6,6 +6,8 @@ import com.sandeveloper.jsscolab.data.Room.AppsDatabase
 import com.sandeveloper.jsscolab.data.Room.MessageDAO
 import com.sandeveloper.jsscolab.data.Room.MessageDatabase
 import com.sandeveloper.jsscolab.data.Room.NotificationDatabase
+import com.sandeveloper.jsscolab.data.Room.SwapDAO
+import com.sandeveloper.jsscolab.data.Room.SwapDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,8 +35,19 @@ class DatabaseModule {
         return Room.databaseBuilder(context,NotificationDatabase::class.java,"NotificationDB").build()
     }
 
+
     @Provides
     fun provideMessageDao(database: MessageDatabase): MessageDAO {
         return database.messageDAO()
+    }
+
+    @Singleton
+    @Provides
+    fun providesSwapDB(@ApplicationContext context: Context):SwapDatabase{
+        return Room.databaseBuilder(context,SwapDatabase::class.java,"SwapDB").build()
+    }
+    @Provides
+    fun provideSwapItem(database: SwapDatabase): SwapDAO {
+        return database.swapDao()
     }
 }

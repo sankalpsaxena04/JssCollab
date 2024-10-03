@@ -24,13 +24,4 @@ interface MessageRepository {
 
     suspend fun deleteMessages(roomId: String, serverResult: (ServerResult<commonResponse>) -> Unit)
 
-    fun initializeSocket()
-
-    fun connectSocket()
-
-    fun disconnectSocket()
-
-    fun listenForMessages(onMessageReceived: (ServerResult<Message>) -> Unit)
-
-    fun sendMessageSocket(message: MessageEntity)
 }

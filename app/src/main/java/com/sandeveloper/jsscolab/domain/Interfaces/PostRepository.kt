@@ -21,10 +21,5 @@ interface PostRepository {
     suspend fun updateCoshopPost(updatePostRequest: updatePostRequest, serverResult: (ServerResult<commonResponse>) -> Unit)
     suspend fun deleteCoshopPost(postId: String, serverResult: (ServerResult<commonResponse>) -> Unit)
 
-    // Swap posts
-    suspend fun createSwap(createSwapRequest: createSwapRequest, serverResult: (ServerResult<commonResponse>) -> Unit)
-    suspend fun getSwaps(getSwapsRequest: getSwapsRequest, serverResult: (ServerResult<getSwapResposne>) -> Unit)
-    suspend fun getMySwaps(serverResult: (ServerResult<getSwapResposne>) -> Unit)
-    suspend fun updateSwap(updateSwapRequest: updateSwapRequest, serverResult: (ServerResult<commonResponse>) -> Unit)
-    suspend fun deleteSwap(swapId: String, serverResult: (ServerResult<commonResponse>) -> Unit)
+
 }

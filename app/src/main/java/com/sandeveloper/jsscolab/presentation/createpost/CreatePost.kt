@@ -1,16 +1,19 @@
-package com.sandeveloper.jsscolab.presentation.Main
+package com.sandeveloper.jsscolab.presentation.createpost
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.format.DateFormat.is24HourFormat
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -25,10 +28,12 @@ import com.sandeveloper.jsscolab.databinding.HostelSelectionBottomsheetBinding
 import com.sandeveloper.jsscolab.databinding.SelectCategoryBottomsheetBinding
 import com.sandeveloper.jsscolab.domain.Constants.Endpoints
 import com.sandeveloper.jsscolab.domain.HelperClasses.PrefManager
+import com.sandeveloper.jsscolab.domain.HelperClasses.toOriginalCategories
 import com.sandeveloper.jsscolab.domain.Models.ServerResult
 import com.sandeveloper.jsscolab.domain.Modules.Post.Filter
 import com.sandeveloper.jsscolab.domain.Modules.Post.createPost
-import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.isNull
+import com.sandeveloper.jsscolab.domain.Modules.swap.SwapEntity
+import com.sandeveloper.jsscolab.domain.Modules.swap.createSwapRequest
 import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,18 +57,14 @@ class CreatePost : Fragment() {
         "hostel_16", "hostel_17", "hostel_18", "hostel_19", "hostel_20", "hostel_21"
     )
 
-    fun String.toOriginalCategories(): String {
-        return when (this) {
-                Endpoints.categories.Pharmaceuticals -> "pharmaceutical"
-                Endpoints.categories.QuickCommerce -> "quick-commerce"
-                Endpoints.categories.FoodDelivery -> "food-delivery"
-                Endpoints.categories.ECommerce -> "e-commerce"
-                Endpoints.categories.SharedCab -> "cab"
-                Endpoints.categories.Exchange -> "subscription-service"
-                else -> "other"
-            }
+    private lateinit var searchAdapter: SwapItemAdapter
+    private lateinit var selectedAdapter: SwapItemAdapter
+    private val selectedItems = mutableSetOf<SwapEntity>()
+    private lateinit var giveAdapter: SwapItemAdapter
+    private lateinit var searchGiveAdapter: SwapItemAdapter
+    private val selectedGiveItems = mutableSetOf<SwapEntity>()
 
-    }
+
     val selectedApps = mutableSetOf<String>()
     private val locations = mutableListOf("GH", "BH", "ISH","University Boy's Hostel","Near Mithaas", "Near YourSpace","Near Hoolive","Women Hostel","Day Scholars")
 
@@ -74,6 +75,8 @@ class CreatePost : Fragment() {
             hideKeyboard()
             setUpCategoryBottomDialog()
         }
+        binding.recyclerViewSearchResults.visibility = View.GONE
+        binding.recyclerViewGiveSearchResults.visibility = View.GONE
         binding.hostels.setOnClickThrottleBounceListener {
             showHostelSelectionBottomSheet()
         }
@@ -114,6 +117,19 @@ class CreatePost : Fragment() {
                         )
                     }
                     Endpoints.categories.Exchange->{
+                        Toast.makeText(requireContext(),selectedLocations.toString(),Toast.LENGTH_SHORT).show()
+                        viewModel.createSwap(
+                            createSwapRequest(
+                                to_give = selectedGiveItems.map { it._id },
+                                to_take = selectedItems.map { it._id },
+                                filter = Filter(
+                                    my_year = true,
+                                    address = selectedLocations.toList(),
+                                    branch = emptyList()
+                                ),
+                                expiration_date = selectedTime!!
+                            )
+                        )
 
                     }
 
@@ -131,6 +147,7 @@ class CreatePost : Fragment() {
         viewModel.createPostState.observe(viewLifecycleOwner, Observer {
             when(it){
                 is ServerResult.Failure -> {
+                    Log.e("serverError",it.exception.toString())
                     Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_SHORT).show()
                     binding.itemView.visibility = View.VISIBLE
                     binding.createPost.isEnabled = true
@@ -145,24 +162,14 @@ class CreatePost : Fragment() {
                     binding.itemView.visibility = View.VISIBLE
                     binding.createPost.isEnabled = true
                     binding.progressbar.visibility = View.GONE
-                    clearSelections()
+                    updateCategorySelection(PrefManager.getSelectedCategory()!!)
+
                     Toast.makeText(requireContext(), "Post Created Successfully", Toast.LENGTH_SHORT).show()
                 }
             }
         })
     }
 
-    private fun clearSelections(){
-        binding.category.setText("Select Category")
-        selectedTime = null
-        selectedApps.clear()
-        selectedLocations.clear()
-        binding.totalAmount.setText(null)
-        binding.senderContribution.setText(null)
-        binding.Comment.setText(null)
-        binding.hostels.setText(null)
-        binding.date.setText("Post Expires on")
-    }
     private fun validPost(): Boolean {
         if(binding.category.text.toString().isEmpty()){
             Toast.makeText(requireContext(), "Select Category", Toast.LENGTH_SHORT).show()
@@ -172,21 +179,31 @@ class CreatePost : Fragment() {
             Toast.makeText(requireContext(), "Select Hostels", Toast.LENGTH_SHORT).show()
             return false
         }
-        else if(selectedApps.isEmpty()){
-            Toast.makeText(requireContext(),"Select Apps",Toast.LENGTH_SHORT).show()
-            return false
-        }
-        else if (binding.senderContribution.text.toString().isEmpty()){
-            Toast.makeText(requireContext(),"Enter Sender Contribution",Toast.LENGTH_SHORT).show()
-            return false
-        }
-        else if (binding.totalAmount.text.toString().isEmpty()){
-            Toast.makeText(requireContext(),"Enter Total Amount",Toast.LENGTH_SHORT).show()
-            return false
-        }
         else if(selectedTime==null){
             Toast.makeText(requireContext(),"Select Date and Time",Toast.LENGTH_SHORT).show()
             return false
+        }
+
+        if(PrefManager.getSelectedCategory()!=Endpoints.categories.Exchange){
+            if (binding.senderContribution.text.toString().isEmpty()){
+                Toast.makeText(requireContext(),"Enter Sender Contribution",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            else if (binding.totalAmount.text.toString().isEmpty()){
+                Toast.makeText(requireContext(),"Enter Total Amount",Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+        }
+        else{
+            if (selectedGiveItems.isEmpty()){
+                Toast.makeText(requireContext(),"Select Items to Give.",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            else if(selectedItems.isEmpty()){
+                Toast.makeText(requireContext(),"Select Items to Receive.",Toast.LENGTH_SHORT).show()
+                return false
+            }
         }
         return true
 
@@ -197,6 +214,8 @@ class CreatePost : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCreatePostBinding.inflate(inflater, container, false)
+        receiveSelect()
+        giveSelect()
         return binding.root
     }
     private fun selectDateTime() {
@@ -221,14 +240,94 @@ class CreatePost : Fragment() {
             openTimePickerForDate(calendar)
         }
     }
+    private fun receiveSelect() {
+        // Adapter for search results
+        searchAdapter = SwapItemAdapter { swapItem ->
+            selectedItems.add(swapItem)
+            selectedAdapter.submitList(selectedItems.toList())
 
+            // Clear the search bar text after selecting an item
+            binding.searchBar.text?.clear()
+
+            // Hide the search results RecyclerView
+            binding.recyclerViewSearchResults.visibility = View.GONE
+        }
+
+        // Adapter for selected items
+        selectedAdapter = SwapItemAdapter {}
+
+        binding.recyclerViewSearchResults.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewSearchResults.adapter = searchAdapter
+
+        // Set up RecyclerView for selected items
+        binding.recyclerViewSelectedItems.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewSelectedItems.adapter = selectedAdapter
+
+        // Observe search results
+        viewModel.searchResults.observe(viewLifecycleOwner, Observer { results ->
+            searchAdapter.submitList(results)
+        })
+
+        // Listen for text changes in the search bar
+        binding.searchBar.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString()
+                if (query.isEmpty()) {
+                    // Hide the RecyclerView if no text is entered
+                    binding.recyclerViewSearchResults.visibility = View.GONE
+                } else {
+                    // Show the RecyclerView when text is entered
+                    binding.recyclerViewSearchResults.visibility = View.VISIBLE
+                    viewModel.setSearchQuery(query)
+                }
+            }
+        })
+    }
+
+    private fun giveSelect() {
+        searchGiveAdapter = SwapItemAdapter { swapItem ->
+            selectedGiveItems.add(swapItem)
+            giveAdapter.submitList(selectedGiveItems.toList())
+
+            binding.givesearchBar.text?.clear()
+
+            binding.recyclerViewGiveSearchResults.visibility = View.GONE
+        }
+
+        giveAdapter = SwapItemAdapter {}
+
+        binding.recyclerViewGiveSearchResults.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewGiveSearchResults.adapter = searchGiveAdapter
+
+        binding.recyclerGiveViewSelectedItems.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerGiveViewSelectedItems.adapter = giveAdapter
+
+        viewModel.searchResults.observe(viewLifecycleOwner, Observer { results ->
+            searchGiveAdapter.submitList(results)
+        })
+
+        binding.givesearchBar.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString()
+                if (query.isEmpty()) {
+                    binding.recyclerViewGiveSearchResults.visibility = View.GONE
+                } else {
+                    binding.recyclerViewGiveSearchResults.visibility = View.VISIBLE
+                    viewModel.getSearchQuery(query)
+                }
+            }
+        })
+    }
     private fun openTimePickerForDate(selectedDate: Calendar) {
         val currentTime = Calendar.getInstance()
         val isSystem24Hour = is24HourFormat(requireContext())
 
         val clockFormat = if (isSystem24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H
 
-        // If the selected date is today, ensure the time is at least 5 minutes from now
         val minHour: Int
         val minMinute: Int
         if (selectedDate.isSameDayAs(currentTime)) {
@@ -239,7 +338,6 @@ class CreatePost : Fragment() {
             minMinute = 0
         }
 
-        // Open the Time Picker
         val timePicker = MaterialTimePicker.Builder()
             .setTimeFormat(clockFormat)
             .setHour(minHour)
@@ -250,7 +348,6 @@ class CreatePost : Fragment() {
         timePicker.show(childFragmentManager, "TIME_PICKER")
 
         timePicker.addOnPositiveButtonClickListener {
-            // Set selected time in the selectedDate calendar object
             selectedDate.set(Calendar.HOUR_OF_DAY, timePicker.hour)
             selectedDate.set(Calendar.MINUTE, timePicker.minute)
 
@@ -258,20 +355,16 @@ class CreatePost : Fragment() {
             if (selectedDate.before(now)) {
                 Toast.makeText(requireContext(), "Selected time is in the past", Toast.LENGTH_SHORT).show()
             } else {
-                // Format and display the selected date and time
                 val sdf = SimpleDateFormat("dd:MM HH:mm", Locale.getDefault())
                 val formattedDateTime = sdf.format(selectedDate.time)
 
-                // Store the selected date and time in milliseconds
                 selectedTime = selectedDate.timeInMillis
 
-                // Display formatted date and time
                 binding.date.setText(formattedDateTime)
             }
         }
     }
 
-    // Helper function to check if two dates are the same day
     private fun Calendar.isSameDayAs(other: Calendar): Boolean {
         return this.get(Calendar.YEAR) == other.get(Calendar.YEAR) &&
                 this.get(Calendar.DAY_OF_YEAR) == other.get(Calendar.DAY_OF_YEAR)
@@ -308,39 +401,46 @@ class CreatePost : Fragment() {
         binding.category.setText(category)
         when(category){
             Endpoints.categories.SharedCab->{
+                binding.totalAmount.visibility = View.VISIBLE
+                binding.senderContribution.visibility = View.VISIBLE
+                binding.Comment.visibility = View.VISIBLE
+                binding.totalAmount.hint = "Enter Total Estimate Fare"
+                binding.Comment.hint = "Describe your Journey Details"
                 binding.date.text = "Select Date& Time of Journey"
                 selectedApps.clear()
+                selectedItems.clear()
+                selectedGiveItems.clear()
                 selectedTime = null
                 selectedLocations.clear()
                 binding.Comment.hint = "Describe your Journey Details"
-                binding.selectItemsToGiveText.visibility = View.GONE
-                binding.selectItemsToReceiveText.visibility = View.GONE
-                binding.giveChipGroup.visibility = View.GONE
-                binding.receiveChipGroup.visibility = View.GONE
+                  binding.receiveSearchBox.visibility = View.GONE
+                binding.giveSearchBox.visibility = View.GONE
             }
-            Endpoints.categories.QuickCommerce,Endpoints.categories.FoodDelivery,Endpoints.categories.ECommerce->{
+            Endpoints.categories.QuickCommerce,Endpoints.categories.FoodDelivery,Endpoints.categories.ECommerce,Endpoints.categories.Pharmaceuticals->{
+                binding.totalAmount.visibility = View.VISIBLE
+                binding.senderContribution.visibility = View.VISIBLE
+                binding.Comment.visibility = View.VISIBLE
                 selectedApps.clear()
                 binding.date.text = "Post Expires on"
+                selectedItems.clear()
+                selectedGiveItems.clear()
                 selectedTime = null
                 selectedLocations.clear()
-               binding.selectItemsToGiveText.visibility = View.GONE
-                binding.selectItemsToReceiveText.visibility = View.GONE
-                binding.giveChipGroup.visibility = View.GONE
-                binding.receiveChipGroup.visibility = View.GONE
+                binding.receiveSearchBox.visibility = View.GONE
+                binding.giveSearchBox.visibility = View.GONE
             }
             Endpoints.categories.Exchange->{
                 selectedApps.clear()
                 binding.date.text = "Post Expires on"
                 selectedTime = null
                 selectedLocations.clear()
+                selectedItems.clear()
+                selectedGiveItems.clear()
                 binding.Comment.visibility = View.GONE
                 binding.senderContribution.visibility = View.GONE
                 binding.totalAmount.visibility = View.GONE
-
-                binding.selectItemsToGiveText.visibility = View.VISIBLE
-                binding.selectItemsToReceiveText.visibility = View.VISIBLE
-                binding.giveChipGroup.visibility = View.VISIBLE
-                binding.receiveChipGroup.visibility = View.VISIBLE
+                binding.giveSearchBox.visibility = View.VISIBLE
+                binding.receiveSearchBox.visibility = View.VISIBLE
             }
         }
         setUpChipSelect(requireContext(), category)

@@ -1,6 +1,6 @@
 package com.sandeveloper.jsscolab.domain.Modules.Auth
 
 data class LoginRequest(
-    val email:String,
+    val emailPhone:String,
     val password:String
 )
