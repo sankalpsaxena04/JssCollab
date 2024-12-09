@@ -38,7 +38,7 @@ android {
 
     buildTypes {
         debug {
-            isDebuggable = false
+            isDebuggable = true
         }
         release {
             isMinifyEnabled = false
@@ -63,9 +63,11 @@ android {
     buildTypes{
         debug {
             buildConfigField("String", "BASE_URL", "\"${getProps("DEBUG_BASE_URL")}\"")
+            buildConfigField("String", "SOCKET_URL", "\"${getProps("DEBUG_SOCKET_URL")}\"")
         }
         release {
             buildConfigField("String", "BASE_URL", "\"${getProps("RELEASE_BASE_URL")}\"")
+            buildConfigField("String", "SOCKET_URL", "\"${getProps("RELEASE_SOCKET_URL")}\"")
         }
     }
 }
@@ -166,8 +168,20 @@ dependencies {
     implementation (libs.firebase.core)
     implementation(platform(libs.firebase.bom.v3320))
     implementation(libs.google.firebase.messaging.ktx)
+    implementation("com.google.android.gms:play-services-ads:23.3.0")
 //    implementation(libs.firebase.analytics)
     implementation("io.socket:socket.io-client:2.0.0") {
         exclude(group = "org.json", module = "json")
     }
+
+    implementation("io.noties.markwon:core:4.6.2")
+    implementation("io.noties.markwon:editor:4.6.2")
+    implementation("io.noties.markwon:html:4.6.2")
+
+    //Shimmer Effect
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
+    //Swipe to refresh
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
 }

@@ -1,6 +1,7 @@
 package com.sandeveloper.jsscolab.di
 
 import android.content.Context
+import com.sandeveloper.jsscolab.BuildConfig
 import com.sandeveloper.jsscolab.domain.Api.*
 import com.sandeveloper.jsscolab.domain.HelperClasses.AuthInterceptor
 import dagger.Module
@@ -22,7 +23,7 @@ class ApiModule {
     @Provides
     fun provideRetrofitBuilder(): Retrofit.Builder {
         return Retrofit.Builder()
-            .baseUrl("BASE_URL")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
     }
 
@@ -118,15 +119,5 @@ class ApiModule {
             .create(MessageApi::class.java)
     }
 
-    @Singleton
-    @Provides
-    fun providesNotificationApi(
-        retrofitBuilder: Builder,
-        @Named("authClient") okHttpClient: OkHttpClient
-    ):NotificationApiService{
-        return retrofitBuilder
-            .client(okHttpClient)
-            .build()
-            .create(NotificationApiService::class.java)
-    }
+
 }
