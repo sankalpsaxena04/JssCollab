@@ -6,13 +6,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sandeveloper.jsscolab.R
+import com.sandeveloper.jsscolab.data.Room.Message
 import com.sandeveloper.jsscolab.databinding.ItemMessageReceiverBinding
 import com.sandeveloper.jsscolab.databinding.ItemMessageSenderBinding
-import com.sandeveloper.jsscolab.domain.Modules.Messages.Message
-import com.sandeveloper.jsscolab.domain.Modules.Messages.MessageEntity
+import com.sandeveloper.jsscolab.domain.Modules.Messages.MessageSend
 import com.sandeveloper.jsscolab.domain.Utility.DateTimeUtils
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-class ChatAdapter(private var messageList: List<MessageEntity>) :
+class ChatAdapter(private var messageList: List<Message>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -46,22 +49,22 @@ class ChatAdapter(private var messageList: List<MessageEntity>) :
     override fun getItemCount(): Int = messageList.size
 
     // Add new message to the list dynamically
-    fun addMessage(newMessage: MessageEntity) {
+    fun addMessage(newMessage: Message) {
         messageList = messageList + newMessage
         notifyItemInserted(messageList.size - 1)
     }
 
     class SenderViewHolder(private val binding: ItemMessageSenderBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: MessageEntity) {
-            binding.textViewMessage.text = message.text
-            binding.textViewTimestamp.text = DateTimeUtils.formatTime(message.time, "MM-dd HH:mm")
+        fun bind(message: Message) {
+            binding.textViewMessage.text = message.message
+            binding.textViewTimestamp.text = DateTimeUtils.formatTime(message.timeSent, "MM-dd HH:mm")
         }
     }
 
     class ReceiverViewHolder(private val binding: ItemMessageReceiverBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: MessageEntity) {
-            binding.textViewMessage.text = message.text
-            binding.textViewTimestamp.text = DateTimeUtils.formatTime(message.time, "MM-dd HH:mm")
+        fun bind(message: Message) {
+            binding.textViewMessage.text = message.message
+            binding.textViewTimestamp.text = SimpleDateFormat("dd-MM HH:mm",Locale.getDefault()).format(Date(message.timeSent))
 
 //            // Load sender's profile picture using Glide
 //            Glide.with(binding.root.context)

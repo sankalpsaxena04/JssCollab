@@ -5,8 +5,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sandeveloper.jsscolab.databinding.ActivityChatBinding
-import com.sandeveloper.jsscolab.domain.Modules.Messages.Message
-import com.sandeveloper.jsscolab.domain.Modules.Messages.MessageEntity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
