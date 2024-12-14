@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/action_bar_back" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About Us"
+            android:textSize="32sp"
+            android:fontFamily="@font/lexendextrabold"
+            android:gravity="center"
+            android:paddingBottom="32dp" />
+
+        <ImageView
+
+            android:id="@+id/logoImageView"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_gravity="center"
+            android:contentDescription="JSS Collab Logo"
+            android:src="@drawable/logo_without_bg" />
+
+        <TextView
+            android:padding="16dp"
+            android:id="@+id/aboutUsText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>
