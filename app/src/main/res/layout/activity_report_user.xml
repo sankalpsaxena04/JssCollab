@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ReportUser">
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/postBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lexendextrabold"
+        android:gravity="center"
+        android:padding="6dp"
+        android:text="Report User"
+        android:textColor="@color/pureblack"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/postBy"
+        android:layout_marginHorizontal="2dp"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reportUserView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/postBy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+    <androidx.cardview.widget.CardView
+        android:id="@+id/profile_pic_card"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/creator_profile_pic"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/profile_pic_placeholder"
+            />
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/creator_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintTop_toTopOf="@id/profile_pic_card"
+        app:layout_constraintStart_toEndOf="@id/profile_pic_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="4dp"
+        android:paddingStart="8dp"
+        android:text="Name: John Doe"
+        android:textSize="20sp"
+        android:fontFamily="@font/lexendblack"/>
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lexendregular"
+        android:maxLines="1"
+        android:paddingStart="10dp"
+        android:text="Location: ISH"
+        android:textColor="@color/black200"
+        android:textSize="16dp"
+        app:layout_constraintTop_toBottomOf="@id/creator_name"
+        app:layout_constraintEnd_toEndOf="@id/creator_name"
+        app:layout_constraintStart_toStartOf="@id/creator_name"
+        tools:layout_editor_absoluteY="128dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:id="@+id/reportOn"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/address"
+            app:layout_constraintStart_toStartOf="@id/creator_name"
+            app:layout_constraintTop_toBottomOf="@id/address"
+            android:text="Report On: Food-Delivery"
+            android:fontFamily="@font/lexendbold"
+            android:textColor="@color/redx"
+            android:paddingStart="10dp"
+            android:padding="4dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressbar"
+            android:elevation="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loader_anim" />
+    <TextView
+        android:id="@+id/description_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please Provide Description:"
+        app:layout_constraintTop_toBottomOf="@id/reportUserView"
+        android:layout_margin="8dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/lexendbold"
+        android:textColor="@color/pureblack"/>
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:minLines="5"
+        android:hint="Description..."
+        android:background="@drawable/gray_border_box"
+        android:padding="12dp"
+        android:layout_margin="8dp"
+        android:maxLength="10000"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_heading" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/report"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/redx_button_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="12dp"
+        >
+
+        <TextView
+            android:id="@+id/report_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/lexendbold"
+            android:gravity="center"
+            android:text="Report User"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
