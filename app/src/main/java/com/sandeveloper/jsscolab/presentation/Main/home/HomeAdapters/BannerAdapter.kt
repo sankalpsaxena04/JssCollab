@@ -7,11 +7,14 @@ import com.bumptech.glide.Glide
 import com.sandeveloper.jsscolab.R
 import com.sandeveloper.jsscolab.databinding.ItemBannerBinding
 
-class BannerAdapter(private val banners: List<Int>) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
+class BannerAdapter(private val banners: List<Int>,private val onClick:(bannerImg:Int)->Unit) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
 
     inner class BannerViewHolder(private val binding: ItemBannerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(bannerImg: Int) {
             Glide.with(binding.root.context).load(bannerImg).placeholder(R.drawable.placeholder).into(binding.bannerImage)
+            binding.root.setOnClickListener {
+                onClick(bannerImg)
+            }
         }
     }
 

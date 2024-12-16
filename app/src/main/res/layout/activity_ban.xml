@@ -5,12 +5,70 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.BanActivity">
-    <TextView
-        android:gravity="center"
+    android:background="@color/pureblack">
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="You are banned from  the App"
-        />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Account Blocked"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/better_white"/>
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/exclamation"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="40dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your JSS Collab account has been blocked due to failure in compliance with our policies.
+If you think we have made a mistake, mail us at:"
+                android:textColor="@color/material_dynamic_primary90"
+                android:textSize="@dimen/action_bar_title"
+                android:fontFamily="@font/sf_pro_display_medium"
+                android:gravity="center"
+                android:paddingHorizontal="25dp"
+                android:paddingBottom="0dp"/>
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="sankalpsaxena2004@gmail.com"
+                android:fontFamily="@font/sf_pro_display_medium"
+                android:textColor="@color/secondaryPink"
+                android:textSize="@dimen/action_bar_title"
+                android:gravity="center"
+                android:textColorLink="@color/secondaryPink"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnClose"
+                style="@style/SolidButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:text="Close"
+                android:layout_marginTop="180dp"
+                android:textSize="22dp"
 
+                android:layout_gravity="bottom"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
