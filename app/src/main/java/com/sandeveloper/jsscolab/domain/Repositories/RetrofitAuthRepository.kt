@@ -1,7 +1,6 @@
 package com.sandeveloper.jsscolab.domain.Repositories
 
-import android.media.tv.CommandResponse
-import androidx.compose.runtime.mutableStateListOf
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.sandeveloper.jsscolab.domain.Api.AuthApi
 import com.sandeveloper.jsscolab.domain.Api.ProfileApi
@@ -34,10 +33,21 @@ class RetrofitAuthRepository @Inject constructor(
                     serverResult(ServerResult.Success(it))
                 } ?: serverResult(ServerResult.Failure(Exception("Response body is null")))
             } else {
-                serverResult(ServerResult.Failure(Exception("Failed with status code: ${response.code()}")))
+                val errorMessage = response.errorBody()?.let { errorBody ->
+                    val errorResponse = parseErrorBody<commonResponse>(errorBody.string())
+                    errorResponse?.message ?: "Unknown error"
+                } ?: "Unknown error"
+                serverResult(ServerResult.Failure(Exception(errorMessage)))
             }
         } catch (e: Exception) {
             serverResult(ServerResult.Failure(e))
+        }
+    }
+    private inline fun <reified T> parseErrorBody(errorBody: String): T? {
+        return try {
+            Gson().fromJson(errorBody, T::class.java)
+        } catch (e: Exception) {
+            null
         }
     }
 
