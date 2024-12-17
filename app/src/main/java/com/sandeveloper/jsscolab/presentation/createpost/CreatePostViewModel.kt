@@ -5,10 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import com.sandeveloper.jsscolab.data.Room.AppsDao
 import com.sandeveloper.jsscolab.data.Room.SwapDAO
 import com.sandeveloper.jsscolab.domain.Api.SwapApi
+import com.sandeveloper.jsscolab.domain.Interfaces.AppsRepository
 import com.sandeveloper.jsscolab.domain.Interfaces.SwapRepository
 import com.sandeveloper.jsscolab.domain.Models.ServerResult
+import com.sandeveloper.jsscolab.domain.Modules.Post.App
 import com.sandeveloper.jsscolab.domain.Modules.Post.createPost
 import com.sandeveloper.jsscolab.domain.Modules.commonResponse
 import com.sandeveloper.jsscolab.domain.Modules.swap.SwapEntity
@@ -22,11 +25,19 @@ import javax.inject.Inject
 class CreatePostViewModel @Inject constructor(
     private val coshopRepository: RetrofitPostRepository,
     private val swapDao: SwapDAO,
-    private val swapApi: SwapRepository
+    private val swapApi: SwapRepository,
+    private val appRepository: AppsRepository
 ) : ViewModel() {
     private val _createPostState = MutableLiveData<ServerResult<commonResponse>>()
     val createPostState: MutableLiveData<ServerResult<commonResponse>> = _createPostState
 
+    val category = MutableLiveData<String>(null)
+
+    private val _categories = MutableLiveData<Set<String>>()
+    val categories: LiveData<Set<String>> get() = _categories
+    init {
+        fetchCategories()  // Load items when ViewModel is created
+    }
     fun createCoshopPost(createPost: createPost) {
         viewModelScope.launch {
             coshopRepository.createCoshopPost(createPost) { serverResult ->
@@ -40,12 +51,12 @@ class CreatePostViewModel @Inject constructor(
 
     }
 
-    fun setSearchQuery(query: String) {
-        _searchQuery.value = query
-    }
     private val _giveQuery = MutableLiveData<String>()
     val getSearchResults: LiveData<List<SwapEntity>> = _giveQuery.switchMap { query ->
         swapDao.searchgiveSwapItems(query)
+    }
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     fun getSearchQuery(query: String) {
@@ -58,5 +69,20 @@ class CreatePostViewModel @Inject constructor(
             }
         }
 
+    }
+    fun fetchCategories() {
+        viewModelScope.launch {
+            val result = appRepository.getCategoriesFromDb().toSet()
+            _categories.value = result
+        }
+    }
+    private val _getAppsByCategoryResponse = MutableLiveData<List<App>>()
+    val getAppsByNameCategoryResponse: LiveData<List<App>> = _getAppsByCategoryResponse
+
+    fun getAppsByCategory(category:String){
+        viewModelScope.launch {
+            val result = appRepository.getAppsNameFrom(category)
+            _getAppsByCategoryResponse.value = result
+        }
     }
 }

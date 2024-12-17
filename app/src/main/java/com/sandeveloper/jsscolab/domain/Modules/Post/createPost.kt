@@ -1,7 +1,7 @@
 package com.sandeveloper.jsscolab.domain.Modules.Post
 
 data class createPost(
-    val app: List<String>,
+    val apps: List<String>,
     val category: String,
     val comment: String?,
     val sender_contribution: Number,
