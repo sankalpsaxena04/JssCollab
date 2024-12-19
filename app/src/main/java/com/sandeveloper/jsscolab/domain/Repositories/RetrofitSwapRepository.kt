@@ -1,12 +1,12 @@
 package com.sandeveloper.jsscolab.domain.Repositories
 
+import android.util.Log
 import com.sandeveloper.jsscolab.data.Room.SwapDAO
 import com.sandeveloper.jsscolab.domain.Api.SwapApi
 import com.sandeveloper.jsscolab.domain.Interfaces.SwapRepository
 import com.sandeveloper.jsscolab.domain.Models.ServerResult
 import com.sandeveloper.jsscolab.domain.Modules.commonResponse
 import com.sandeveloper.jsscolab.domain.Modules.swap.SwapEntity
-import com.sandeveloper.jsscolab.domain.Modules.swap.SwapItem
 import com.sandeveloper.jsscolab.domain.Modules.swap.createSwapRequest
 import com.sandeveloper.jsscolab.domain.Modules.swap.getSwapResposne
 import com.sandeveloper.jsscolab.domain.Modules.swap.getSwapsRequest
@@ -39,8 +39,10 @@ class RetrofitSwapRepository @Inject constructor(
             val response = swapApi.getSwaps(getSwapsRequest)
             if (response.isSuccessful) {
                 serverResult(ServerResult.Success(response.body()!!))
+                Log.d("RetrofitSwapRepository", "getSwaps: ${response.body()}")
             } else {
                 serverResult(ServerResult.Failure(Exception(response.message())))
+                Log.d("RetrofitSwapRepository", "getSwaps: ${response.message()}")
             }
         } catch (e: Exception) {
             serverResult(ServerResult.Failure(e))
@@ -53,8 +55,10 @@ class RetrofitSwapRepository @Inject constructor(
             val response = swapApi.getMySwaps()
             if (response.isSuccessful) {
                 serverResult(ServerResult.Success(response.body()!!))
+                Log.d("RetrofitSwapRepository", "getMySwaps: ${response.body()}")
             } else {
                 serverResult(ServerResult.Failure(Exception(response.message())))
+                Log.d("RetrofitSwapRepository", "getMySwapsaa: ${response.message()}")
             }
         } catch (e: Exception) {
             serverResult(ServerResult.Failure(e))

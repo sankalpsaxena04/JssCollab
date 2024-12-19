@@ -9,5 +9,6 @@ data class Swap(
     val sender: Sender?,
     val to_give: List<SwapItem>,
     val to_take: List<SwapItem>,
-    val filter: Filter
+    val filter: Filter,
+    val expiration_date:String
 )

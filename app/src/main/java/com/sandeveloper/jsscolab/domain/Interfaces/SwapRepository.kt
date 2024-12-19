@@ -3,7 +3,6 @@ package com.sandeveloper.jsscolab.domain.Interfaces
 import com.sandeveloper.jsscolab.domain.Models.ServerResult
 import com.sandeveloper.jsscolab.domain.Modules.commonResponse
 import com.sandeveloper.jsscolab.domain.Modules.swap.SwapEntity
-import com.sandeveloper.jsscolab.domain.Modules.swap.SwapItem
 import com.sandeveloper.jsscolab.domain.Modules.swap.createSwapRequest
 import com.sandeveloper.jsscolab.domain.Modules.swap.getSwapResposne
 import com.sandeveloper.jsscolab.domain.Modules.swap.getSwapsRequest
