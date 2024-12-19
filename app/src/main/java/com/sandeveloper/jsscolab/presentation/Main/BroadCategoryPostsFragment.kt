@@ -27,6 +27,7 @@ import com.sandeveloper.jsscolab.domain.Modules.swap.getSwapsRequest
 import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.sandeveloper.jsscolab.presentation.Main.home.HomeViewModel
 import com.sandeveloper.jsscolab.presentation.Main.home.HomeAdapters.PostAdapter
+import com.sandeveloper.jsscolab.presentation.ReportUser
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -51,22 +52,7 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
         binding.backButton.setOnClickThrottleBounceListener{
             requireActivity().finish()
         }
-        binding.searchButton.setOnClickThrottleBounceListener {
-            if(binding.searchbox.visibility==View.VISIBLE){
-                binding.searchbox.visibility=View.GONE
-                binding.searchButton.setImageResource(R.drawable.baseline_search_24)
-                binding.searchButtontoSearch.visibility = View.GONE
-                binding.selectCategory.visibility = View.VISIBLE
-                binding.createPost.visibility = View.VISIBLE
-            }else{
 
-                binding.searchbox.visibility=View.VISIBLE
-                binding.searchButton.setImageResource(R.drawable.baseline_search_off_24)
-                binding.searchButtontoSearch.visibility = View.VISIBLE
-                binding.selectCategory.visibility = View.GONE
-                binding.createPost.visibility = View.GONE
-            }
-        }
         postAdapter = PostAdapter(
             onPostClicked = { post ->
                 // Save the clicked post using setOnClickedPost
@@ -93,7 +79,7 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
                         .setMessage("Do you want to report this user?")
                         .setPositiveButton("Yes") { _, _ ->
                             //TODO()
-                            findNavController().navigate(R.id.action_categoryListFragment_to_reportUser2)
+                            startActivity(Intent(requireContext(), ReportUser::class.java))
                         }
                         .setNegativeButton("No", null)
                         .show()
@@ -115,6 +101,9 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
             }
             Endpoints.broadcategories.my_posts->{
                 binding.categoryTitle.text = Endpoints.broadcategories.my_posts
+            }
+            Endpoints.broadcategories.my_swaps->{
+                binding.categoryTitle.text = Endpoints.broadcategories.my_swaps
             }
         }
 
@@ -150,6 +139,9 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
         else if(PrefManager.getBroadCategory()==Endpoints.broadcategories.my_posts){
             homeViewModel.getMyCoshopPosts()
         }
+        else if(PrefManager.getBroadCategory()==Endpoints.broadcategories.my_swaps){
+            homeViewModel.getMySwaps()
+        }
         else{
             homeViewModel.getCoshopPosts(
                 getPostsRequest(
@@ -175,7 +167,6 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
                 binding.progressbar.visibility = View.VISIBLE
                 binding.postsRecyclerView.visibility = View.GONE
                 binding.searchbox.visibility = View.GONE
-                binding.searchButton.visibility = View.GONE
                 binding.createPost.visibility = View.GONE
             }
             is ServerResult.Success -> {
@@ -184,7 +175,6 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
                     binding.progressbar.visibility = View.GONE
                     binding.postsRecyclerView.visibility = View.VISIBLE
                     binding.searchbox.visibility = View.VISIBLE
-                    binding.searchButton.visibility = View.VISIBLE
                     binding.createPost.visibility = View.VISIBLE
                 }
                 else{
@@ -196,14 +186,13 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
     homeViewModel.swapPostResponse.observe(viewLifecycleOwner, Observer {
         when(it){
             is ServerResult.Failure -> {
-                Log.e("swapError",it.exception.message!!)
+                Log.e("swapError",it.exception.toString())
                 Toast.makeText(requireContext(),it.exception.message,Toast.LENGTH_SHORT).show()
             }
             is ServerResult.Progress -> {
                 binding.progressbar.visibility = View.VISIBLE
                 binding.postsRecyclerView.visibility = View.GONE
                 binding.searchbox.visibility = View.GONE
-                binding.searchButton.visibility = View.GONE
                 binding.createPost.visibility = View.GONE
             }
             is ServerResult.Success -> {
@@ -215,11 +204,10 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
                     binding.progressbar.visibility = View.GONE
                     binding.postsRecyclerView.visibility = View.VISIBLE
                     binding.searchbox.visibility = View.VISIBLE
-                    binding.searchButton.visibility = View.VISIBLE
                     binding.createPost.visibility = View.VISIBLE
                 }
                 else{
-                    Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"here ${it.data.message}",Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -228,15 +216,22 @@ class BroadCategoryPostsFragment  @Inject constructor() : Fragment() {
         homeViewModel.commonResponse.observe(viewLifecycleOwner, Observer {
             when(it) {
                 is ServerResult.Failure -> {
-                    Toast.makeText(requireContext(), "Failed to delete post", Toast.LENGTH_SHORT).show()
+                    binding.progressbar.visibility = View.GONE
+                    Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_SHORT).show()
                 }
                 is ServerResult.Progress -> {
                     binding.progressbar.visibility = View.VISIBLE
                 }
                 is ServerResult.Success -> {
-                    Toast.makeText(requireContext(), "Post deleted successfully", Toast.LENGTH_SHORT).show()
-                    // Refresh the posts list after deletion
-                    setUpViewModel()
+                    if(it.data.success){
+                        binding.progressbar.visibility = View.GONE
+                        Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
+                        setUpViewModel()
+                    }
+                    else{
+                        binding.progressbar.visibility = View.GONE
+                        Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })

@@ -6,6 +6,18 @@
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.Main.home.BroadCategoryPosts">
+    <com.airbnb.lottie.LottieAnimationView
+        android:visibility="gone"
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/cat_loader" />
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -45,9 +57,9 @@
                     app:layout_constraintEnd_toEndOf="@id/topbar"/>
 
                 <ImageButton
-                    android:id="@+id/searchButton"
+                    android:id="@+id/createPost"
                     android:background="@color/transparent"
-                    android:src="@drawable/baseline_search_24"
+                    android:src="@drawable/baseline_add_box_24"
                     android:scaleType="fitXY"
                     android:padding="4dp"
                     android:layout_marginEnd="4dp"
@@ -67,51 +79,8 @@
                 app:layout_constraintEnd_toEndOf="@id/topbar"
                 android:layout_marginHorizontal="4dp"/>
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/progressbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/border"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/selectCategory"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/loader_anim" />
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/selectCategory"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/gray_border_box"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:focusedByDefault="false"
-                android:fontFamily="@font/lexendregular"
-                android:padding="8dp"
-                android:layout_marginEnd="4dp"
-                android:text="Select Category"
-                app:layout_constraintEnd_toStartOf="@+id/createPost"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/topbar" />
 
             <ImageButton
-                android:id="@+id/createPost"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@color/transparent"
-                android:src="@drawable/baseline_add_box_24"
-                android:scaleType="fitXY"
-                android:layout_margin="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/selectCategory"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/selectCategory" />
-
-            <ImageButton
-                android:visibility="gone"
                 android:id="@+id/searchButtontoSearch"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -119,14 +88,13 @@
                 android:background="@drawable/filled_gray_box"
                 android:src="@drawable/baseline_search_24"
                 android:scaleType="fitXY"
-                android:layout_margin="4dp"
+                android:layout_marginEnd="4dp"
                 app:layout_constraintBottom_toBottomOf="@+id/searchbox"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/searchbox" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/searchbox"
-                android:visibility="gone"
                 android:layout_marginEnd="4dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -143,12 +111,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/postsRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="58dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/topbar"
                 tools:layout_editor_absoluteX="8dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

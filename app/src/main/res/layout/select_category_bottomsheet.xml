@@ -21,8 +21,17 @@
         android:background="@color/primary_bg"
         >
 
-
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_close_24"
+            android:background="@color/transparent"
+            android:id="@+id/close"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            app:tint="@color/pureblack" />
         <TextView
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="9"
@@ -32,8 +41,13 @@
             android:text="Select Category"
             android:textColor="@color/black200"
             android:textSize="18dp" />
-
-
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_check_24"
+            android:background="@color/transparent"
+            android:id="@+id/done"
+            />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
@@ -51,92 +65,11 @@
         android:layout_marginBottom="40dp"
         android:indeterminateTint="@color/primary"/>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="10dp"
-        android:visibility="visible"
-        android:layout_height="wrap_content"
-        android:id="@+id/layout">
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioGroup">
-            <Button
-                android:background="@color/transparent"
-                android:id="@+id/QuickCommerce"
-                android:buttonTint="@color/secondary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lexendbold"
-                android:textColor="@color/primary"
-                android:textSize="16dp"
-                android:paddingStart="15dp"
-                android:text="Quick Commerce"/>
-
-            <Button
-                android:background="@color/transparent"
-                android:id="@+id/FoodDelivery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/secondary"
-                android:fontFamily="@font/lexendbold"
-                android:textColor="@color/primary"
-                android:paddingStart="15dp"
-                android:textSize="16dp"
-                android:text="Food Delivery"/>
-            <Button
-                android:background="@color/transparent"
-                android:id="@+id/Pharmaceuticals"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/secondary"
-                android:fontFamily="@font/lexendbold"
-                android:textColor="@color/primary"
-                android:paddingStart="15dp"
-                android:textSize="16dp"
-                android:text="Pharmaceuticals"/>
-
-            <Button
-                android:background="@color/transparent"
-                android:id="@+id/ECommerce"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:buttonTint="@color/secondary"
-                android:fontFamily="@font/lexendbold"
-                android:textColor="@color/primary"
-                android:textSize="16dp"
-                android:text="E-Commerce"/>
-
-            <Button
-                android:background="@color/transparent"
-                android:id="@+id/Exchange"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:buttonTint="@color/secondary"
-                android:fontFamily="@font/lexendbold"
-                android:textColor="@color/primary"
-                android:textSize="16dp"
-                android:text="Exchange"/>
-            <Button
-                android:background="@color/transparent"
-                android:id="@+id/SharedCab"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:buttonTint="@color/secondary"
-                android:fontFamily="@font/lexendbold"
-                android:textColor="@color/primary"
-                android:textSize="16dp"
-                android:text="Shared Cab"/>
-
-        </RadioGroup>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
+<androidx.recyclerview.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/categoryRv"
+    android:layout_marginHorizontal="4dp"
+    />
 
 </LinearLayout>
