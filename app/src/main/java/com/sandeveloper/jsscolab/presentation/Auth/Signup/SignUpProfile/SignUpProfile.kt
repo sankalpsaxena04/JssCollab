@@ -6,6 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -16,12 +19,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sandeveloper.MainActivity
 import com.sandeveloper.jsscolab.R
 import com.sandeveloper.jsscolab.databinding.FragmentSignupProfileBinding
@@ -30,11 +36,14 @@ import com.sandeveloper.jsscolab.domain.Models.ServerResult
 import com.sandeveloper.jsscolab.domain.Modules.Auth.signupRequest
 import com.sandeveloper.jsscolab.domain.Modules.Profile.CreateProfile
 import com.sandeveloper.jsscolab.domain.Modules.Profile.PictureUpdateRequest
+import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.isNull
 import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.sandeveloper.jsscolab.presentation.Auth.AuthViewModel
 import com.sandeveloper.jsscolab.presentation.Main.ProfileViewModel
+import com.sandeveloper.jsscolab.presentation.StartScreen
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject
@@ -50,6 +59,10 @@ class SignUpProfile@Inject constructor() : Fragment() {
     private val authViewModel:AuthViewModel by viewModels()
     private val profileViewModel:ProfileViewModel by viewModels()
     private var base64Profile:String? = null
+    private var selectedLocation:String? = null
+
+    private var capturedUserImageUri: Uri? = null
+    private val REQUEST_USER_IMAGE_CAPTURE = 1
 
 
     override fun onCreateView(
@@ -57,11 +70,33 @@ class SignUpProfile@Inject constructor() : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSignupProfileBinding.inflate(inflater,container,false)
-        val hostelTypes = arrayOf("GH", "BH", "ISH","University Boy's Hostel","Near Mithaas", "Near YourSpace","Near Hoolive","Women Hostel","Day Scholars")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, hostelTypes)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.locationDropdown.setAdapter(adapter)
-        binding.locationDropdown.textSize = 22.0f
+        val hostelTypes = arrayOf(
+            "GH", "BH", "ISH", "University Boy's Hostel", "Near Mithaas",
+            "Near YourSpace", "Near Hoolive", "Women Hostel", "Day Scholars"
+        )
+
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            hostelTypes
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+
+        // Attach the adapter to the Spinner
+        binding.locationDropdown.adapter = adapter
+
+        // Set listener for item selection
+        binding.locationDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedLocation = hostelTypes[position]
+                Toast.makeText(requireContext(), "Selected: $selectedLocation", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                selectedLocation = null
+            }
+        }
+
+
         // Set click listener for the profile image
         setUpView()
         binding.SignUp.setOnClickThrottleBounceListener {
@@ -97,8 +132,16 @@ class SignUpProfile@Inject constructor() : Fragment() {
                     enableInputs(false)
                 }
                 is ServerResult.Success -> {
-                    val createProfile = CreateProfile(binding.nameEditText.text.toString(),binding.admissionNumberEditText.text.toString(),binding.locationDropdown.text.toString(),"asde123")
-                    profileViewModel.createProfile(createProfile)
+                    if (it.data.success){
+                        val fcm = FirebaseMessaging.getInstance().token.addOnSuccessListener {
+                            val createProfile = CreateProfile(binding.nameEditText.text.toString(),binding.admissionNumberEditText.text.toString(),selectedLocation!!,it)
+                            profileViewModel.createProfile(createProfile)
+                        }
+                    }
+                    else{
+                        Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
+                    }
+
 
                 }
             }
@@ -117,34 +160,45 @@ class SignUpProfile@Inject constructor() : Fragment() {
                     enableInputs(false)
                 }
                 is ServerResult.Success -> {
-                    profileViewModel.updatePicture(PictureUpdateRequest(base64Profile!!))
+                    if(it.data.success){
+
+                        profileViewModel.updatePicture(uri = Uri.parse(profileViewModel.userSelfie.value!!), context = requireContext())
+                    }
+                    else{
+                        Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
+                    }
 
                 }
             }
         })
         profileViewModel.updateProfilePictureResponse.observe(viewLifecycleOwner, Observer {
             binding.progressbar.visibility=View.GONE
-            enableInputs(true)
             when(it){
                 is ServerResult.Failure -> {
                     Toast.makeText(requireContext(),it.exception.message.toString(),Toast.LENGTH_SHORT).show()
 
-                    binding.progressbar.visibility = View.GONE
-                    enableInputs(true)
+                    profileViewModel.getMyDetails()
                 }
                 is ServerResult.Progress -> {
                     binding.progressbar.visibility = View.VISIBLE
-                    enableInputs(false)
                 }
                 is ServerResult.Success -> {
-                    profileViewModel.getMyDetails()
-                    Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
-
-
+                    if(it.data.success){
+                    Toast.makeText(requireContext(), it.data.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-
         })
+        profileViewModel.userSelfie.observe(viewLifecycleOwner) {
+            if (!it.isNull){
+                val imageBitmap = handleImageRotation(Uri.parse(it!!))
+                binding.profileImageView.setImageBitmap(imageBitmap)
+
+            }
+        }
         profileViewModel.profileResponse.observe(viewLifecycleOwner, Observer {
             when(it){
                 is ServerResult.Failure -> {
@@ -157,11 +211,15 @@ class SignUpProfile@Inject constructor() : Fragment() {
                     enableInputs(false)
                 }
                 is ServerResult.Success -> {
+                    if(it.data.success){
                     Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
-                    val intent = Intent(requireContext(),MainActivity::class.java)
+                    val intent = Intent(requireContext(), StartScreen::class.java)
                     startActivity(intent)
                     requireActivity().finish()
-
+                    }
+                    else{
+                        Toast.makeText(requireContext(),it.data.message,Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -180,28 +238,28 @@ class SignUpProfile@Inject constructor() : Fragment() {
             Toast.makeText(requireContext(),"Enter a valid name",Toast.LENGTH_SHORT).show()
             return false
         }
-        else if(base64Profile==null){
-            Toast.makeText(requireContext(),"Insert Profile Picture",Toast.LENGTH_SHORT).show()
-            return false
-        }
-        else if(binding.locationDropdown.text.toString()=="Select Location"){
+        if(selectedLocation.isNullOrEmpty()){
             Toast.makeText(requireContext(),"Select a valid Location",Toast.LENGTH_SHORT).show()
             return false
         }
-        else if(!isValidEmail(binding.emailId.text.toString())){
+        if(!isValidEmail(binding.emailId.text.toString())){
             Toast.makeText(requireContext(),"Enter an Valid Email",Toast.LENGTH_SHORT).show()
             return false
         }
-        else if(binding.password.text.toString().length<8){
+        if(binding.password.text.toString().length<8){
             Toast.makeText(requireContext(),"Password should have minimum 8 characters",Toast.LENGTH_SHORT).show()
             return false
         }
-        else if(binding.reEnterPassword.text.toString()!= binding.password.text.toString()){
+        if(binding.reEnterPassword.text.toString()!= binding.password.text.toString()){
             Toast.makeText(requireContext(),"ReEnter Correct password",Toast.LENGTH_SHORT).show()
             return false
         }
-        else if(!isValidAdmissionNo(binding.admissionNumberEditText.text.toString())){
+        if(!isValidAdmissionNo(binding.admissionNumberEditText.text.toString())){
             Toast.makeText(requireContext(),"Enter a valid AdmissionNo.",Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if(profileViewModel.userSelfie.value.isNullOrEmpty()){
+            Toast.makeText(requireContext(),"Upload a selfie",Toast.LENGTH_SHORT).show()
             return false
         }
 
@@ -209,8 +267,8 @@ class SignUpProfile@Inject constructor() : Fragment() {
     }
 
     private fun isValidAdmissionNo(admn:String): Boolean {
-
-        return true
+        val admno = Regex("^(?:[0-2][0-9]|3[0-9])(DL)?(cseds|cseaiml|cse|it|ece|eee|ee|me|ce)(?:0?[1-9][0-9]?|[1-2][0-9]{2})\$")
+        return admno.matches(admn)
     }
 
     fun isValidEmail(email: String): Boolean {
@@ -221,82 +279,38 @@ class SignUpProfile@Inject constructor() : Fragment() {
     }
     private fun setUpView() {
         // Profile image click listener
-        binding.profileImageView.setOnClickThrottleBounceListener {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
+        binding.profileImageView.setOnClickThrottleBounceListener{
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                     requireActivity(),
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
             } else {
-                pickImage()
+                pickUserImage()
             }
         }
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                REQUEST_IMAGE_CAPTURE -> {
-                    val imageBitmap = data?.extras?.get("data") as Bitmap
-                    Log.d("profilebase63",imageBitmap.toString())
-                    base64Profile = imageBitmap.toBase64DataUri()
-                    binding.profileImageView.setImageBitmap(imageBitmap)
-                }
-                REQUEST_IMAGE_PICK -> {
-                    val selectedImage = data?.data
-                    base64Profile = uriToBase64(requireContext(), selectedImage!!)
-                    binding.profileImageView.setImageURI(selectedImage)
-                }
-            }
-        }
-    }
-    fun Bitmap.toBase64DataUri(imageFormat: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG): String {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-
-        // Compress the Bitmap into the ByteArrayOutputStream using the chosen format (PNG or JPEG)
-        this.compress(imageFormat, 50, byteArrayOutputStream)
-        val byteArray = byteArrayOutputStream.toByteArray()
-
-        // Convert the byte array to a Base64 string
-        val base64String = Base64.encodeToString(byteArray, Base64.NO_WRAP)
-
-        // Determine the MIME type based on the image format
-        val mimeType = when (imageFormat) {
-            Bitmap.CompressFormat.PNG -> "image/png"
-            Bitmap.CompressFormat.JPEG -> "image/jpeg"
-            else -> "image/png" // Default to PNG
-        }
-
-        // Return the complete Data URI string
-        return "data:$mimeType;base64,$base64String"
-    }
-
-    private fun pickImage() {
-
-        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
+    private fun pickUserImage() {
+        val options = arrayOf<CharSequence>("Take Selfie", "Cancel")
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Choose an option")
+        builder.setTitle("Click your selfie in a well lit environment")
         builder.setItems(options) { dialog, item ->
             when (options[item]) {
-                "Take Photo" -> {
-                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST)
-                    } else {
-                        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-                    }
+                "Take Selfie" -> {
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+                    capturedUserImageUri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "${requireContext().packageName}.provider",  // Matches the manifest authority
+                        createImageFile("User_Selfie")
+                    )
+
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, capturedUserImageUri)
+                    startActivityForResult(intent, REQUEST_USER_IMAGE_CAPTURE)
                 }
-                "Choose from Gallery" -> {
-                    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                    startActivityForResult(intent, REQUEST_IMAGE_PICK)
-                }
+
                 "Cancel" -> {
                     dialog.dismiss()
                 }
@@ -304,29 +318,46 @@ class SignUpProfile@Inject constructor() : Fragment() {
         }
         builder.show()
     }
-    fun uriToBase64(context: Context, uri: Uri): String? {
-        return try {
-            // Get input stream from the Uri
-            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
-            val byteArrayOutputStream = ByteArrayOutputStream()
+    private fun handleImageRotation(imageUri: Uri): Bitmap {
+        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        val exif = ExifInterface(requireContext().contentResolver.openInputStream(imageUri)!!)
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
 
-            // Buffer to read the input stream
-            val buffer = ByteArray(1024)
-            var bytesRead: Int
+        val rotatedBitmap = when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
+            ExifInterface.ORIENTATION_NORMAL -> bitmap
+            else -> bitmap
+        }
+        return rotatedBitmap
+    }
+    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+    }
+    private fun createImageFile(type: String): File {
+        val storageDir: File = File(requireContext().filesDir, "images")
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
+        return File(storageDir, "JSS-Collab-${type}-${System.currentTimeMillis()}.jpeg")
+    }
 
-            // Read the InputStream and write to ByteArrayOutputStream
-            while (inputStream?.read(buffer).also { bytesRead = it ?: -1 } != -1) {
-                byteArrayOutputStream.write(buffer, 0, bytesRead)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_USER_IMAGE_CAPTURE -> {
+                    capturedUserImageUri?.let { uri ->
+                        profileViewModel.setUserSelfie(uri.toString())
+                    }
+                }
+
             }
-
-            // Convert the ByteArrayOutputStream to a byte array
-            val byteArray = byteArrayOutputStream.toByteArray()
-
-            // Encode the byte array to a Base64 string
-            Base64.encodeToString(byteArray, Base64.DEFAULT)
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
         }
     }
 

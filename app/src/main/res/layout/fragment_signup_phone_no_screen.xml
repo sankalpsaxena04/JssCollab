@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/will_send_otp"
             android:layout_marginTop="35dp"
-            android:text="@string/enter_mobile_no"/>
+            android:text="Enter mobile no."/>
         <EditText
             android:id="@+id/et_phone"
             style="@style/EditTextStyle"

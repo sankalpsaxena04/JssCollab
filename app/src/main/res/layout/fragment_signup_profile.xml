@@ -14,8 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:src="@drawable/profile_pic_placeholder"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_marginTop="16dp" />
 
     <!-- Name Input -->
     <EditText
@@ -27,7 +26,7 @@
         android:textColor="@color/pureblack"
         android:hint="Name"
         android:inputType="textPersonName"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
 
     <!-- Admission Number Input -->
     <EditText
@@ -38,38 +37,31 @@
         style="@style/EditTextStyle"
         android:layout_below="@id/nameEditText"
         android:hint="Admission Number"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/loc"
+    <!-- Location Dropdown using Spinner -->
+    <Spinner
+        android:id="@+id/locationDropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/pureblack"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
         android:layout_below="@id/admissionNumberEditText"
-        android:layout_marginTop="16dp">
-        <AutoCompleteTextView
-            android:id="@+id/location_dropdown"
-            style="@style/EditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="none"
-            android:textColor="@color/edit_text_hint"
-            android:text="Select Location"/>
+        android:layout_marginTop="16dp"
+        android:background="@drawable/gray_border_box"
+        android:paddingVertical="10dp"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
-
+    <!-- Email Input -->
     <EditText
         android:id="@+id/emailId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/EditTextStyle"
         android:textColor="@color/pureblack"
-        android:layout_below="@id/loc"
+        android:layout_below="@id/locationDropdown"
         android:hint="example@gmail.com"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
+
+    <!-- Password Input -->
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
@@ -79,8 +71,9 @@
         android:layout_below="@id/emailId"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
 
+    <!-- Re-enter Password Input -->
     <EditText
         android:id="@+id/reEnterPassword"
         android:layout_width="match_parent"
@@ -90,7 +83,9 @@
         android:textColor="@color/pureblack"
         android:hint="Re-Enter Password"
         android:inputType="textPassword"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
+
+    <!-- Sign Up Button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/SignUp"
         style="@style/SolidButtonStyle"
@@ -101,6 +96,8 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="22dp" />
+
+    <!-- Progress bar -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/progressbar"
         android:layout_width="match_parent"
@@ -113,6 +110,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_loop="true"/>
+        app:lottie_loop="true" />
 
 </RelativeLayout>
