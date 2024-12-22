@@ -3,28 +3,18 @@ package com.sandeveloper.jsscolab.presentation
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.InstallStateUpdatedListener
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.InstallStatus
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
-import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sandeveloper.MainActivity
 import com.sandeveloper.jsscolab.R
+import com.sandeveloper.jsscolab.data.Room.AppsDatabase
+import com.sandeveloper.jsscolab.data.Room.SwapDatabase
 import com.sandeveloper.jsscolab.databinding.ActivityStartScreenBinding
 import com.sandeveloper.jsscolab.domain.Constants.Endpoints
 import com.sandeveloper.jsscolab.domain.HelperClasses.NetworkChangeReceiver
@@ -33,146 +23,155 @@ import com.sandeveloper.jsscolab.domain.Models.ServerResult
 import com.sandeveloper.jsscolab.domain.Utility.ExtensionsUtil.toast
 import com.sandeveloper.jsscolab.domain.Utility.GlobalUtils
 import com.sandeveloper.jsscolab.presentation.Auth.Auth
-import com.sandeveloper.jsscolab.presentation.Auth.AuthViewModel
-import com.sandeveloper.jsscolab.presentation.Main.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class StartScreen @Inject constructor() : AppCompatActivity(), NetworkChangeReceiver.NetworkChangeCallback {
 
-    private val APP_UPDATE_REQUEST_CODE = 901
     private val viewModel: StartScreenViewModel by viewModels()
-    private lateinit var appUpdateManager: AppUpdateManager
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(this@StartScreen)
     }
     private val binding: ActivityStartScreenBinding by lazy {
         ActivityStartScreenBinding.inflate(layoutInflater)
     }
+    @Inject
+    lateinit var swapDatabase: SwapDatabase
+    @Inject
+    lateinit var appsDatabase: AppsDatabase
     private val networkChangeReceiver = NetworkChangeReceiver(this, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+        Log.d("tokenjwt", PrefManager.getToken().toString())
+        registerNetworkChangeReceiver()
 
         if (PrefManager.getAppMode() == Endpoints.ONLINE_MODE) {
-            startMainActivity()
+            checkToken()
         }
 
-        bindObservers()
-        registerNetworkChangeReceiver()
+        bindObserver()
     }
 
-    // Binds observers to LiveData to handle the response flow
-    private fun bindObservers() {
-        viewModel.profileResponse.observe(this) { result ->
-            when (result) {
+    private fun bindObserver() {
+        viewModel.banStatusResponse.observe(this, Observer {
+            when(it) {
                 is ServerResult.Failure -> {
-                    showToast(result.exception.message)
-                }
-                is ServerResult.Success -> {
-                    viewModel.getSwapItems()
-                }
-                else -> {}
-            }
-        }
-
-        // Observe ban status to handle if user is banned or not
-        viewModel.banStatusResponse.observe(this) { result ->
-            when (result) {
-                is ServerResult.Failure -> {
-                    showToast(result.exception.message)
                     viewModel.isBanned()
                 }
+                ServerResult.Progress -> {}
                 is ServerResult.Success -> {
-                    handleBanStatus(result.data.ban)
-                }
-                else -> {}
-            }
-        }
-
-        // Observe swap items response
-        viewModel.swapItemsResponse.observe(this) { result ->
-            when (result) {
-                is ServerResult.Failure -> {
-                    showToast(result.exception.message)
-                }
-                is ServerResult.Success -> {
-                    if (result.data.success) {
-                        showToast("Swaps received")
-                        Log.d("swapdb",result.data.swapItems.toString())
-                        viewModel.setSwapsToDB(result.data.swapItems)
+                    if (it.data.success) {
+                        if (it.data.ban) {
+                            startActivity(Intent(this, BanActivity::class.java))
+                            finish()
+                        }
                     } else {
-                        showToast(result.data.message)
+                        viewModel.isBanned()
                     }
                 }
-                else -> {}
             }
-        }
+        })
 
-        // Observe DB save response for swaps
-        viewModel.swapItemsDBResponse.observe(this) { result ->
-            when (result) {
-                is ServerResult.Failure -> {
-                    showToast(result.exception.message)
-                    Log.d("swapdb",result.exception.message.toString())
-                }
+        viewModel.profileResponse.observe(this, Observer {
+            when(it) {
+                is ServerResult.Failure -> {}
+                ServerResult.Progress -> {}
                 is ServerResult.Success -> {
-                    showToast("Saved Successfully")
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    if (it.data.success) {
+                        PrefManager.setcurrentUserdetails(it.data.details!!)
+                        checkDetails()
+                    } else {
+                        toast(it.data.message)
+                    }
                 }
-                else -> {}
             }
-        }
+        })
+
+        viewModel.swapItemsResponse.observe(this, Observer {
+            when(it) {
+                is ServerResult.Failure -> {
+                    viewModel.getSwapItems()
+                }
+                ServerResult.Progress -> {}
+                is ServerResult.Success -> {
+                    if (it.data.success) {
+                        val swaps = it.data.swapItems
+                        CoroutineScope(Dispatchers.IO).launch {
+                            swapDatabase.swapDao().insertSwaps(swaps)
+                        }
+                    } else {
+                        Toast.makeText(this, it.data.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+
+        viewModel.getAppAppsResponse.observe(this, Observer {
+            when(it) {
+                is ServerResult.Failure -> {
+                    viewModel.getApps(null, null)
+                }
+                ServerResult.Progress -> {}
+                is ServerResult.Success -> {
+                    if (it.data.success) {
+                        val apps = it.data.apps
+                        CoroutineScope(Dispatchers.IO).launch {
+                            appsDatabase.appsDao().insertApps(apps ?: listOf())
+                        }
+                    }
+                }
+            }
+        })
+
+        viewModel.messageResponse.observe(this, Observer {
+            when(it) {
+                is ServerResult.Failure -> {
+                    viewModel.getMessages()
+                }
+                ServerResult.Progress -> {}
+                is ServerResult.Success -> {
+                    if (it.data) {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Something went Wrong", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
     }
 
-    private fun startMainActivity() {
-        val token = PrefManager.getToken()
-        if (token != null) {
-            PrefManager.setOfflineDialogShown(false)
-            PrefManager.setAppMode(Endpoints.ONLINE_MODE)
-
-            // Check if the user is banned
-            viewModel.isBanned()
-        } else {
-            // If token is not available, redirect to Auth screen
+    private fun checkToken() {
+        PrefManager.setOfflineDialogShown(false)
+        PrefManager.setAppMode(Endpoints.ONLINE_MODE)
+        if (PrefManager.getToken().isNullOrEmpty()) {
             startActivity(Intent(this, Auth::class.java))
             finish()
-        }
-    }
-
-    private fun handleBanStatus(isBanned: Boolean) {
-        if (isBanned) {
-            showToast("You are banned")
-            startActivity(Intent(this, BanActivity::class.java))
-            finish()
         } else {
-            checkEmailAndProceed()
-        }
-    }
-
-    // Check if email is null or empty, and proceed accordingly
-    private fun checkEmailAndProceed() {
-        val currentUserDetails = PrefManager.getcurrentUserdetails()
-        if (currentUserDetails.email.isNullOrEmpty()) {
-            viewModel.getMyDetails().also {
-                // After getting details, fetch swaps
-                viewModel.getSwapItems()
+            FirebaseMessaging.getInstance().token.addOnSuccessListener {
+                viewModel.setFCMToken(it)
             }
-        } else {
-            // Directly fetch swaps if email is available
-            viewModel.getSwapItems()
+            viewModel.isBanned().also {
+                checkDetails()
+            }
         }
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(this, message ?: "Unknown error", Toast.LENGTH_SHORT).show()
+    private fun checkDetails() {
+        if (PrefManager.getcurrentUserdetails().email.isNullOrEmpty()) {
+            viewModel.getMyDetails()
+        }
+        viewModel.getSwapItems().also {
+            viewModel.getApps(null, null).also {
+                viewModel.getMessages()
+            }
+        }
     }
 
     override fun onOnlineModePositiveSelected() {
@@ -182,14 +181,12 @@ class StartScreen @Inject constructor() : AppCompatActivity(), NetworkChangeRece
 
     override fun onOfflineModePositiveSelected() {
         PrefManager.setAppMode(Endpoints.OFFLINE_MODE)
-
     }
 
     override fun onOfflineModeNegativeSelected() {
         networkChangeReceiver.retryNetworkCheck()
     }
 
-    // Register the receiver to handle network changes
     private fun registerNetworkChangeReceiver() {
         val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         registerReceiver(networkChangeReceiver, intentFilter)
