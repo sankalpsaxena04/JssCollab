@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Jss Connect</string>
+    <string name="app_name">Jss Collab</string>
 
-    <string name="splash_welcome_txt">Jss Colab \nConnecting Students</string>
+    <string name="splash_welcome_txt">Jss Collab \nConnecting Students</string>
     <string name="login_btn_label">Login</string>
     <string name="get_started_btn_label">Sign Up</string>
     <string name="signup_title">Sign up</string>
@@ -22,7 +22,7 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="verify_your_n_phone_number">Verify your \nphone number</string>
-    <string name="we_will_send_you_an_one_time_password_otp_on_your_whatsapp_to_verify_your_phone_number">We will send you an <b>One Time Password (OTP)</b> on your whatsapp to verify your phone number</string>
+    <string name="we_will_send_you_an_one_time_password_otp_on_your_whatsapp_to_verify_your_phone_number">We will send you an <b>One Time Password (OTP)</b> verify your phone number</string>
     <string name="get_otp">Get OTP</string>
     <string name="enter_mobile_no">Enter mobile no./email*</string>
     <string name="_92xxxxxxxx">92xxxxxxxx</string>
