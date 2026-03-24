@@ -44,7 +44,7 @@
 
   <h2>🧑‍🎓 Use Cases</h2>
   <ul>
-    <li>Pooling a food delivery order from Swiggy/Zomato with hostel mates.</li>
+    <li>Pooling orders with hostel mates.</li>
     <li>Swapping a 3rd-year Quantum for a fresh 2nd-year one at the semester break.</li>
     <li>Splitting a Netflix or Spotify Family subscription between 5 friends.</li>
     <li>Sharing an Ola/Uber ride to the station before semester break vacations.</li>
